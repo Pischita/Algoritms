@@ -28,7 +28,7 @@ function solve() {
     let map = new Array(streetLength);
     let emptyIndexes = [];
 
- 
+
     for (let i = 0; i < streetLength; i++) {
         if (street[i] == 0) {
             map[i] = 0;
@@ -36,29 +36,66 @@ function solve() {
         }
     }
 
-    for (let currentLength = 0; currentLength < streetLength; currentLength++) {        
-        for (let i = 0; i < streetLength; i++) {
-            if (map[i] === currentLength) {
-                if (i - 1 >= 0 && map[i - 1] == undefined) {
-                    map[i - 1] = currentLength + 1;
-                    
+    if (emptyIndexes.length >= 2) {
+        for (let i = 0; i < emptyIndexes.length - 1; i++) {
+            let leftPointer = emptyIndexes[i];
+            let rightPointer = emptyIndexes[i + 1];
+
+            let run = true;
+
+            while (run) {
+                leftPointer++;
+                if (map[leftPointer] == undefined) {
+                    map[leftPointer] = map[leftPointer - 1] + 1;
+                } else {
+                    run = false;
                 }
 
-                if (i + 1 < streetLength && map[i + 1] == undefined) {
-                    map[i + 1] = currentLength + 1;
+                rightPointer--;
+                if (map[rightPointer] == undefined) {
+                    map[rightPointer] = map[rightPointer + 1] + 1;
+                } else {
+                    run = false;
                 }
             }
+
         }
     }
+
+    if(emptyIndexes[0] > 0){
+        let rightPointer = emptyIndexes[0];
+
+        rightPointer--;
+        while(rightPointer >= 0){
+            map[rightPointer] = map[rightPointer + 1] + 1;
+            rightPointer--;
+        }   
+
+    }
+
+    if(emptyIndexes[emptyIndexes.length -1] != map.length -1){
+        let leftPointer = emptyIndexes[emptyIndexes.length -1];
+
+        leftPointer++;
+
+        while(leftPointer < map.length){
+            map[leftPointer] = map[leftPointer - 1] + 1; 
+            leftPointer++;
+        }
+    }
+
     console.log(map.join(' '));
 }
 
 
-let input = `5
-0 1 4 9 0
+let input = `12
+7 3 0 2 5 6 9 4 0 8 20 0
 `;
 
 
 _inputLines = input.split('\n');
 
 solve();
+
+
+// id решения 53623535
