@@ -1,3 +1,4 @@
+// id решения 53623535
 const _readline = require('readline');
 
 const _reader = _readline.createInterface({
@@ -88,7 +89,7 @@ function solve() {
 }
 
 
-let input = `12
+/*let input = `12
 7 3 0 2 5 6 9 4 0 8 20 0
 `;
 
@@ -97,5 +98,4 @@ _inputLines = input.split('\n');
 
 solve();
 
-
-// id решения 53623535
+*/
