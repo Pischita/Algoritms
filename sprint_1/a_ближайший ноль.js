@@ -5,29 +5,22 @@ const _reader = _readline.createInterface({
     input: process.stdin
 });
 
-let _inputLines = [];
-let _curLine = 0;
+let inputLines = [];
 
-// Установим callback на считывание строки - так мы получим
-// все строки из ввода в массиве _inputLines.
 _reader.on('line', line => {
-    _inputLines.push(line);
+    inputLines.push(line);
 });
 
 // Когда ввод закончится, будет вызвана функция solve.
 process.stdin.on('end', solve);
 
 
-function readLine() {
-    return _inputLines[_curLine++];
-}
-
 function solve() {
-    let streetLength = Number(readLine());
-    let street = readLine().split(' ');
+    const streetLength = Number(inputLines[0]);
+    const street = inputLines[1].split(' ');
 
-    let map = new Array(streetLength);
-    let emptyIndexes = [];
+    const map = new Array(streetLength);
+    const emptyIndexes = [];
 
 
     for (let i = 0; i < streetLength; i++) {
@@ -46,14 +39,14 @@ function solve() {
 
             while (run) {
                 leftPointer++;
-                if (map[leftPointer] == undefined) {
+                if (map[leftPointer] === undefined) {
                     map[leftPointer] = map[leftPointer - 1] + 1;
                 } else {
                     run = false;
                 }
 
                 rightPointer--;
-                if (map[rightPointer] == undefined) {
+                if (map[rightPointer] === undefined) {
                     map[rightPointer] = map[rightPointer + 1] + 1;
                 } else {
                     run = false;
@@ -94,8 +87,8 @@ function solve() {
 `;
 
 
-_inputLines = input.split('\n');
+inputLines = input.split('\n');
 
 solve();
-
 */
+
