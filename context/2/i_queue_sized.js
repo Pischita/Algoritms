@@ -42,7 +42,7 @@ class MyQueueSized{
 }
 
 
-// id решения 53655935
+
 const _readline = require('readline');
 
 const _reader = _readline.createInterface({
