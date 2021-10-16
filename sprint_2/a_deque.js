@@ -5,8 +5,22 @@ ID верного решения 54584395
 Но по условию его использовать нельзя.
 
 Т.к. по условию задачи размер дека задается и скорость выполнения должна быть за O(1)
-буду использовать "Очередь на кольцевом буфере". В ходе реализации самое главное смотреть 
-чтобы индексы головы и хвоста не выходили за диапазоны массива и друг на друга не наезжали. 
+буду использовать "Очередь на кольцевом буфере". Создам класс Deque с фиксированным массивом.
+И индексами начала и хвоста и проинициализирую их нулем.  При добавлении в конец 
+дека буду проверять чтобы небыло переполнения дека и сохранять в массив с индексом хвоста.
+И индекс хвоста буду увеличивать на 1 и буду использовать остаток от деления 
+ от максимального количества элементов в массиве, чтобы индекс хвоста не вышел за пределы массива. 
+
+При добавлении в начало так же буду проверять чтобы небыло переполнения массива и буду записывать 
+значение в массив с индеквом "начала". И этот индекс буду уменьшать на еденицу.
+После буду проверять чтобы индекс не стал отрицательным и если он стал отрицательним 
+буду индексу "начала" присваивать значение (размер массива - 1)
+
+Оценим пространственную сложность алгоритма. 
+Дек содержащий n элементов будет занимать O(n) памяти.
+Дек имеет фиксированный размер и увеличение его не происходит.
+
+Сложность извлечения и добавления O(1) т.к. перебора не происходит, элемент извлекается и добавляется сразу.
 */
 
 class Deque {
@@ -18,8 +32,16 @@ class Deque {
         this._size = 0;
     }
 
+    isFull(){
+        return this._size === this._maxSize;
+    }
+
+    isEmpty(){
+        return this._size === 0;
+    }
+
     push_front(x) {
-        if (this._size === this._maxSize) {
+        if (this.isFull()) {
             console.log('error');
             return;
         }
@@ -33,15 +55,11 @@ class Deque {
         this._data[this._head] = x;
         this._size++;
 
-        // if (this._size === 1) {
-        //     this._tail = this._head;
-        // }
     }
 
     push_back(x) {
-        if (this._size === this._maxSize) {
-            console.log('error');
-            return;
+        if (this.isFull()) {
+            return 'error';
         }
 
         if (this._data[this._tail] !== undefined) {
@@ -53,9 +71,8 @@ class Deque {
     }
 
     pop_back() {
-        if (this._size === 0) {
-            console.log('error');
-            return null;
+        if (this.isEmpty()) {
+            return 'error';
         }
 
         let x = this._data[this._tail];
@@ -73,19 +90,17 @@ class Deque {
     }
 
     pop_front() {
-        if (this._size === 0) {
-            console.log('error');
-            return null;
+        if (this.isEmpty()) {
+            return 'error';
         }
 
         let x = this._data[this._head];
         this._data[this._head] = undefined;
 
         this._size--;
-        if(this._size > 0){
+        if( !this.isEmpty() ){
            this._head = (this._head + 1) % this._maxSize; 
-        }
-        
+        }        
 
         return x;
     }
@@ -120,116 +135,29 @@ function solve() {
     const deque = new Deque(capacity);
     const skipLines = 2;
 
+    const OPERATION = {
+        PUSH_FRONT:'push_front',
+        PUSH_BACK:'push_back',
+        POP_FRONT: 'pop_front',
+        POP_BACK: 'pop_back'
+    }
+
     for (let i = 0; i < inputLines.length - skipLines; i++) {
-        let command = inputLines[skipLines + i];
-        if (command.includes('push_front')) {
-            deque.push_front(command.split(' ')[1]);
-        } else if (command.includes('push_back')) {
-            deque.push_back(command.split(' ')[1]);
-        } else if (command.includes('pop_back')) {
-            let x = deque.pop_back();
-            if (x) {
-                console.log(x);
-            }
+        let [command, value] = inputLines[skipLines + i].split(' ');
+        let result;
+        if (command.includes(OPERATION.PUSH_FRONT)) {
+            deque.push_front(value);
+        } else if (command.includes(OPERATION.PUSH_BACK)) {
+            deque.push_back(value);
+        } else if (command.includes(OPERATION.POP_BACK)) {
+            result = deque.pop_back();
+        } else if (command.includes(OPERATION.POP_FRONT)) {
+            result = deque.pop_front();
+        }
 
-        } else if (command.includes('pop_front')) {
-            let x = deque.pop_front();
-            if (x) {
-                console.log(x);
-            }
-
+        if (result) {
+            console.log(result);
         }
 
     }
 }
-
-
-let input = `297
-8
-push_front 842
-pop_back
-push_front 576
-push_front -853
-pop_back
-push_front 123
-push_front -236
-pop_front
-push_back 840
-pop_front
-push_back 740
-push_back 347
-pop_front
-push_front -767
-push_front -711
-push_back -7
-pop_front
-pop_back
-pop_back
-pop_back
-pop_back
-pop_front
-push_back -215
-push_front 540
-pop_front
-push_front -293
-pop_back
-pop_back
-pop_front
-pop_back
-push_back 873
-push_front 47
-push_back -238
-push_front -575
-pop_front
-push_front -916
-push_front 292
-push_back 302
-push_front 456
-push_back 92
-push_back -422
-push_back 890
-push_back -100
-pop_back
-push_front -356
-pop_front
-push_front 430
-push_front 469
-push_back -56
-push_front 273
-pop_back
-pop_back
-push_front -397
-push_back 131
-pop_front
-push_back -4
-push_front -265
-push_back 10
-push_back -531
-pop_back
-pop_back
-pop_back
-push_front 766
-pop_front
-push_front -520
-pop_back
-pop_back
-pop_back
-pop_back
-pop_back
-push_front -386
-push_back -320
-push_back 21
-pop_front
-push_back 495
-pop_front
-push_front -95
-pop_front
-pop_back
-push_back 908
-push_front 115
-push_back`;
-
-
-inputLines = input.split('\n');
-
-solve();
