@@ -1,7 +1,7 @@
 /*
 ID правильного решения 54746822
 
-Т.к. условиям задания нужно использовать стек.
+Т.к. по условиям задания нужно использовать стек.
 Буду действовать таким образом. Из входных данных буду получать оператор,
 если этот оператор не математический знак тогда буду ложить это число в стек 
 и просматривать следующий оператор. Если опетатор математический знак,
@@ -12,7 +12,13 @@ ID правильного решения 54746822
 буду передавать числа в обратном порядке для простоты извлечения из стека,
 но для большего понимания параметры назову с порядковым номером для лучшего понимания.
 
-Сложность лубой операции будет O(1)
+Пространственная сложность алгоритма всегда будет O(2), т.к. при обработке любой последовательности чисел
+в стеке будет находится не более двух элементов. Разрастание по памяти может происходить только из-за 
+большой входной последовательности чисел для обработки, но учитывая что в обработке всегда будет только 2 числа,
+размером входных данных можно пренебречь.
+
+Временная сложность алгоритма будет O(2n), т.к. нужно будет поместить числа в стек.
+После получения знака, нужно будет извлечь из стека 2 числа, произвести вычисления и обратно поместить в стек.
 */
 
 class Stack{
@@ -47,14 +53,21 @@ _reader.on('line', line => {
 // Когда ввод закончится, будет вызвана функция solve.
 process.stdin.on('end', solve);
 
+const SIGNS = {
+    PLUS: '+',
+    MINUS: '-',
+    MULTIPLY: '*',
+    DEVIDE:'/'
+}
+
 function calculate(num2, num1, sign){
-    if(sign === '+'){
+    if(sign === SIGNS.PLUS){
         return num1 + num2;
-    }else if(sign === '-'){
+    }else if(sign === SIGNS.MINUS){
         return num1 - num2;
-    }else if (sign === '*'){
+    }else if (sign === SIGNS.MULTIPLY){
         return num1 * num2;
-    }else if(sign === '/'){
+    }else if(sign === SIGNS.DEVIDE){
         return Math.floor(num1 / num2);        
     }else{
         console.log('Wrong operation sign');
@@ -70,7 +83,7 @@ function solve() {
     for(let i = 0; i < operators.length; i++){
         const operator = operators[i];
         
-        if(operator ==='+' || operator ==='-' || operator ==='*' || operator ==='/'){
+        if(operator === SIGNS.PLUS || operator === SIGNS.MINUS || operator === SIGNS.MULTIPLY || operator === SIGNS.DEVIDE){
             const result = calculate(stack.pop(), stack.pop(), operator);
             stack.push(result);
 
@@ -82,9 +95,3 @@ function solve() {
     console.log(stack.pop() );
 }
 
-
-let input = `7 2 + 4 * 2 +`;
-
-inputLines = input.split('\n');
-
-solve();
