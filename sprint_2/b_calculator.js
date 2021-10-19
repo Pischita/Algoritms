@@ -12,13 +12,13 @@ ID правильного решения 54746822
 буду передавать числа в обратном порядке для простоты извлечения из стека,
 но для большего понимания параметры назову с порядковым номером для лучшего понимания.
 
-Пространственная сложность алгоритма всегда будет O(2), т.к. при обработке любой последовательности чисел
+Пространственная сложность алгоритма всегда будет O(1), т.к. при обработке любой последовательности чисел
 в стеке будет находится не более двух элементов. Разрастание по памяти может происходить только из-за 
 большой входной последовательности чисел для обработки, но учитывая что в обработке всегда будет только 2 числа,
 размером входных данных можно пренебречь.
 
-Временная сложность алгоритма будет O(2n), т.к. нужно будет поместить числа в стек.
-После получения знака, нужно будет извлечь из стека 2 числа, произвести вычисления и обратно поместить в стек.
+Временная сложность алгоритма будет линейной в зависимости от входных данных O(n)
+
 */
 
 class Stack{
@@ -38,7 +38,7 @@ class Stack{
 const _readline = require('readline');
 
 const _reader = _readline.createInterface({
-    input: process.stdin;
+    input: process.stdin
 });
 
 let inputLines = [];
@@ -54,24 +54,14 @@ _reader.on('line', line => {
 process.stdin.on('end', solve);
 
 const SIGNS = {
-    PLUS: '+',
-    MINUS: '-',
-    MULTIPLY: '*',
-    DEVIDE:'/'
+    '+': (a, b) =>(a + b),
+    '-': (a, b) =>(a - b),
+    '*': (a, b) =>(a * b),
+    '/': (a, b) =>(a / b)
 }
 
 function calculate(num2, num1, sign){
-    if(sign === SIGNS.PLUS){
-        return num1 + num2;
-    }else if(sign === SIGNS.MINUS){
-        return num1 - num2;
-    }else if (sign === SIGNS.MULTIPLY){
-        return num1 * num2;
-    }else if(sign === SIGNS.DEVIDE){
-        return Math.floor(num1 / num2);        
-    }else{
-        console.log('Wrong operation sign');
-    }
+    return SIGNS[sign](num1, num2);
 }
 
 function solve() {
@@ -83,10 +73,9 @@ function solve() {
     for(let i = 0; i < operators.length; i++){
         const operator = operators[i];
         
-        if(operator === SIGNS.PLUS || operator === SIGNS.MINUS || operator === SIGNS.MULTIPLY || operator === SIGNS.DEVIDE){
+        if(operator in SIGNS){
             const result = calculate(stack.pop(), stack.pop(), operator);
             stack.push(result);
-
         }else{
             stack.push(Number(operator) );
         }
