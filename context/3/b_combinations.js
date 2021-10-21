@@ -25,11 +25,21 @@ let digits = {
     9:'wxyz'
 }
 
-function gen_combination(comb, combIndex, letterIndex, result){
-    
-    
+function gen_combination(comb, combIndex, result){
+    if (combIndex >= comb.length){
+        return result + ' ';
+    } else {
+        let str = comb[combIndex];
 
-   
+        strResult =''
+
+        for(let i = 0; i < str.length; i++){
+            strResult += gen_combination(comb, combIndex+1, result+ str[i] );
+        }
+
+        return strResult;
+        
+    }   
 }
 
 function solve() {
@@ -40,17 +50,8 @@ function solve() {
         comb.push(digits[buttons[i]]);
     }
 
-
-
-
-    let result = gen_combination(comb, 0, 0, '');
-
-
-    console.log(result);
-
-    
-
-        
+    let result = gen_combination(comb, 0, '');
+    console.log(result);       
 }
 
 
