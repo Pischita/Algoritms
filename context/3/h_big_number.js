@@ -25,10 +25,11 @@ function compare(a, b) {
         return 1;
     } else {
         //
-        let ostDigit = a[minLength] || b[minLength];
-        let lastDigit = a[minLength - 1];
+        let ostDigit;
+        let lastDigit = a[0];
         if (a.length > b.length) {
-            if (ostDigit > lastDigit) {
+            ostDigit = a[a.length -1];
+            if (ostDigit >= lastDigit) {
                 return -1;
             } else if (ostDigit <= lastDigit) {
                 return 1;
@@ -36,6 +37,7 @@ function compare(a, b) {
                 return 0
             }
         } else if (a.length < b.length) {
+            ostDigit = b[b.length-1];
             if (ostDigit > lastDigit) {
                 return 1;
             } else if (ostDigit <= lastDigit) {
@@ -60,11 +62,11 @@ function solve() {
 }
 
 
-let input = `100
-82 941 861 954 894 823 921 1000 831 943 937 919 980 944 828 825 857 810 83 947 868 964 998 95 980 839`;
+let input = `38
+82 83 89 88 8
+`;
 
-input = `100
-82 822`;
+
 
 
 
