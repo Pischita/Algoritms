@@ -15,40 +15,12 @@ _reader.on('line', line => {
 process.stdin.on('end', solve);
 
 function compare(a, b) {
-    let minLength = Math.min(a.length, b.length);
-    const mA = Number(a.substr(0, minLength));
-    const mB = Number(b.substr(0, minLength));
-
-    if (mA > mB) {
+    if(Number(a + b) > Number(b + a) ){
         return -1;
-    } else if (mA < mB) {
-        return 1;
-    } else {
-        //
-        let ostDigit;
-        let lastDigit = a[0];
-        if (a.length > b.length) {
-            ostDigit = a[a.length -1];
-            if (ostDigit >= lastDigit) {
-                return -1;
-            } else if (ostDigit <= lastDigit) {
-                return 1;
-            } else {
-                return 0
-            }
-        } else if (a.length < b.length) {
-            ostDigit = b[b.length-1];
-            if (ostDigit > lastDigit) {
-                return 1;
-            } else if (ostDigit <= lastDigit) {
-                return -1;
-            } else {
-                return 0;
-            }
-        } else {
-            return 0;
-        }
-
+    }else if(Number(b + a) > Number(a + b) ){
+        return 1
+    }else{
+        return 0;
     }
 }
 
@@ -63,7 +35,7 @@ function solve() {
 
 
 let input = `38
-82 83 89 88 8
+828  82 823
 `;
 
 
