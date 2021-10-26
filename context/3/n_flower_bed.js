@@ -18,51 +18,56 @@ process.stdin.on('end', solve);
 
 function solve() {
     const countGardeners = Number(inputLines[0]);
+
     const result = [];
 
     const skipLines = 1;
     let resultRanges = [];
-    for(let i = 0; i < countGardeners; i++){
+    for (let i = 0; i < countGardeners; i++) {
         let range = inputLines[i + skipLines].split(' ');
         let left = Number(range[0]);
-        let right = Number(range[1]) ;
-        
-        let existingRanges = resultRanges.filter(item => {
-           return (left >= item.left && left <= item.right)
-                || (right >= item.left && right < item.right)
-                || (left <=item.left && right >= item.right);
-
-        });
+        let right = Number(range[1]);
 
         let newRange = {
             left: left,
             right: right
         };
-    
-        for(let existRange of existingRanges){
-            newRange.left = Math.min(existRange.left, newRange.left);
-            newRange.right = Math.max(existRange.right, newRange.right);
+        for (let resIndex = 0; resIndex < resultRanges.length; resIndex++){
+            let item = resultRanges[resIndex];
+            
+            if ( (left >= item.left && left <= item.right)
+                    || (right >= item.left && right < item.right)
+                    || (left <= item.left && right >= item.right) ) {
 
-             let index = resultRanges.indexOf(existRange);
-             if(index >=0){
-                 resultRanges.splice(index, 1);
-             }
+                newRange.left = Math.min(item.left, newRange.left);
+                newRange.right = Math.max(item.right, newRange.right);
+             
+                resultRanges.splice(resIndex, 1);
+                resIndex--;
+            }
         }
 
-        resultRanges.push(newRange);
+        resultRanges.push(newRange);        
     }
 
-    resultRanges = resultRanges.sort((a, b)=>{
-        if(a.left < b.left){
+    resultRanges = resultRanges.sort((a, b) => {
+        if (a.left < b.left) {
             return -1;
-        }else if(b.left < a.left){
+        } else if (b.left < a.left) {
             return 1
-        }else {
-           return 0;
+        } else {
+            return 0;
         }
     });
-    for(let range of resultRanges){
-        console.log(`${range.left} ${range.right}`);
+
+    strOld = '';
+    for (let range of resultRanges) {
+        let str = `${range.left} ${range.right}`;
+        if(strOld != str){
+            console.log(str);
+        }
+
+        strOld = str;
     }
 }
 
