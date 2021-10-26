@@ -25,40 +25,53 @@ function solve() {
         let range = inputLines[i + skipLines].split(' ');
         let left = Number(range[0]);
         let right = Number(range[1]) ;
-        while(right > result.length){
+        while(right + 1 > result.length){
             result.push(0);
         }
 
-        for(let j = Number(range[0]) - 1; j < Number(range[1]) ; j++){
+        for(let j = left; j <= right ; j++){
+            if(result[j] != 0 && result[j] != i+1){
+                let gardenerNumber = result[j];
+                let k = j;
+                while(result[k] === gardenerNumber && k >= 0){
+                    result[k] = i+1;
+                    k--;
+                }
+                k = j+1;
+                while(result[k] === gardenerNumber && k < result.length){
+                    result[k] = i+1;
+                    k++;
+                }
+            }
             result[j] = i+1;
         }
     }
 
-    console.log(result);
+    //console.log(result);
 
     resultRanges = [];
 
     let i = 0;
     while(i < result.length){
         if( result[i] !== 0){
-            let start = i+1;
-            while(result[i] === 1){
+            let start = i;
+            let gardenerNumber = result[i];
+            while(result[i] === gardenerNumber){
                 i++;
             }
-            let end = i;
+            let end = i-1;
             console.log(`${start} ${end}`);
         }else{
             i++;
         }
-    }
+    } 
 }
 
 
-let input = `4
-2 3
-5 6
-3 4
-3 4`;
+let input = `3
+48 76
+0 8
+40 93`;
 
 inputLines = input.split('\n');
 
