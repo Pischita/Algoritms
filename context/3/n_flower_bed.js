@@ -21,57 +21,59 @@ function solve() {
     const result = [];
 
     const skipLines = 1;
+    let resultRanges = [];
     for(let i = 0; i < countGardeners; i++){
         let range = inputLines[i + skipLines].split(' ');
         let left = Number(range[0]);
         let right = Number(range[1]) ;
-        while(right + 1 > result.length){
-            result.push(0);
+        
+        let existingRanges = resultRanges.filter(item => {
+           return (left >= item.left && left <= item.right)
+                || (right >= item.left && right < item.right)
+                || (left <=item.left && right >= item.right);
+
+        });
+
+        let newRange = {
+            left: left,
+            right: right
+        };
+    
+        for(let existRange of existingRanges){
+            newRange.left = Math.min(existRange.left, newRange.left);
+            newRange.right = Math.max(existRange.right, newRange.right);
+
+             let index = resultRanges.indexOf(existRange);
+             if(index >=0){
+                 resultRanges.splice(index, 1);
+             }
         }
 
-        for(let j = left; j <= right ; j++){
-            if(result[j] != 0 && result[j] != i+1){
-                let gardenerNumber = result[j];
-                let k = j;
-                while(result[k] === gardenerNumber && k >= 0){
-                    result[k] = i+1;
-                    k--;
-                }
-                k = j+1;
-                while(result[k] === gardenerNumber && k < result.length){
-                    result[k] = i+1;
-                    k++;
-                }
-            }
-            result[j] = i+1;
-        }
+        resultRanges.push(newRange);
     }
 
-    //console.log(result);
-
-    resultRanges = [];
-
-    let i = 0;
-    while(i < result.length){
-        if( result[i] !== 0){
-            let start = i;
-            let gardenerNumber = result[i];
-            while(result[i] === gardenerNumber){
-                i++;
-            }
-            let end = i-1;
-            console.log(`${start} ${end}`);
-        }else{
-            i++;
+    resultRanges = resultRanges.sort((a, b)=>{
+        if(a.left < b.left){
+            return -1;
+        }else if(b.left < a.left){
+            return 1
+        }else {
+           return 0;
         }
-    } 
+    });
+    for(let range of resultRanges){
+        console.log(`${range.left} ${range.right}`);
+    }
 }
 
 
-let input = `3
-48 76
-0 8
-40 93`;
+let input = `6
+1 3
+3 5
+4 6
+5 6
+2 4
+7 10`;
 
 inputLines = input.split('\n');
 
