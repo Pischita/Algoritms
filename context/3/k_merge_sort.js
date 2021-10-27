@@ -19,43 +19,30 @@ function merge_sort(arr, left, right) {
 	return arr;
 }
 
-function mergeLR(leftPart, rightPart){
-	let result = [];
-
-	while(leftPart.length && rightPart.length){	
-		result.push( leftPart[0] > rightPart[0] ? rightPart.shift() : leftPart.shift() );		
-	}
-
-	while(leftPart.length){
-		result.push(leftPart.shift() );
-	}
-
-	while(rightPart.length){
-		result.push(rightPart.shift() );
-	}
-
-	return result;
-
-}
-
 function merge(arr, left, mid, right) {
-	
-	let leftPart = arr.slice(left, mid);
-	let rightPart = arr.slice(mid, right);
 
 	let result = [];
 
+	let l = left, r = mid
 
-	while(leftPart.length && rightPart.length){	
-		result.push( leftPart[0] > rightPart[0] ? rightPart.shift() : leftPart.shift() );		
+	while(l < mid && r < right){
+		if(arr[l] <= arr[r]){
+			result.push(arr[l]);
+			l++;
+		}else{
+			result.push(arr[r]);
+			r++;		
+		}		
 	}
 
-	while(leftPart.length){
-		result.push(leftPart.shift() );
+	while(l < mid){
+		result.push(arr[l]);
+		l++;
 	}
 
-	while(rightPart.length){
-		result.push(rightPart.shift() );
+	while(r < right){
+		result.push(arr[r]);
+		r++;
 	}
 
 	return result;
