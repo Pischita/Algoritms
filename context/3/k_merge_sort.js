@@ -1,23 +1,41 @@
 function merge_sort(arr, left, right) {
 
-	if(arr.length <= 1){
-		return arr;
+	if( (right - left) === 1){
+		return [arr[left]];
 	}
 
 	let middle =  Math.floor( (left + right) / 2 );
-
-	let leftPart = arr.slice(left, middle);
-	leftPart = merge_sort(leftPart, 0, middle);
 	
-	let rightPart = arr.slice(middle, right);
-	rightPart = merge_sort(rightPart, 0, rightPart.length);
+	let leftPart = merge_sort(arr, left, middle);
 
-	let result = merge(leftPart.concat(rightPart), left, middle, right);
-	for(i = left; i < right; i++){
-		arr[i] = result[i];
+	let rightPart = merge_sort(arr, middle, right);
+	
+	let result =  merge(arr, left, middle, right);
+
+	 for(i = 0; i < result.length; i++){
+	 	arr[i+left] = result[i];
 	}
 
 	return arr;
+}
+
+function mergeLR(leftPart, rightPart){
+	let result = [];
+
+	while(leftPart.length && rightPart.length){	
+		result.push( leftPart[0] > rightPart[0] ? rightPart.shift() : leftPart.shift() );		
+	}
+
+	while(leftPart.length){
+		result.push(leftPart.shift() );
+	}
+
+	while(rightPart.length){
+		result.push(rightPart.shift() );
+	}
+
+	return result;
+
 }
 
 function merge(arr, left, mid, right) {
@@ -26,25 +44,18 @@ function merge(arr, left, mid, right) {
 	let rightPart = arr.slice(mid, right);
 
 	let result = [];
-	let l = 0, r=0;
-	while(l < leftPart.length && r < rightPart.length){
-		if( parseInt( leftPart[l] ) <= parseInt( rightPart[r] ) ) {
-			result.push( leftPart[l] );
-			l++;
-		}else{
-			result.push( rightPart[r] );
-			r++;
-		}
+
+
+	while(leftPart.length && rightPart.length){	
+		result.push( leftPart[0] > rightPart[0] ? rightPart.shift() : leftPart.shift() );		
 	}
 
-	while(l < leftPart.length){
-		result.push(leftPart[l]);
-		l++;
+	while(leftPart.length){
+		result.push(leftPart.shift() );
 	}
 
-	while(r < rightPart.length){
-		result.push(rightPart[r]);
-			r++;	
+	while(rightPart.length){
+		result.push(rightPart.shift() );
 	}
 
 	return result;
@@ -52,11 +63,11 @@ function merge(arr, left, mid, right) {
 
 
 
-function test() {
-	let c = [ -6, -12, -14, 14 ];
-	merge_sort(c, 0, 4);
-	//expected = [1, 1, 2, 2, 4, 10];
-	console.log(c);
-}
+// function test() {
+// 	let c = [ -6, -12, -14, 1 ];
+// 	merge_sort(c, 0, 4);
+// 	//expected = [1, 1, 2, 2, 4, 10];
+// 	console.log(c);
+// }
  
-test();   
+// test();   
