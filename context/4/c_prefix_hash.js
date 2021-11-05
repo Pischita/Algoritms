@@ -35,34 +35,21 @@ function solve() {
         powerOfP = (powerOfP * p) % m;
     }
 
-    // for(let i = 0; i < str.length; i++){
-    //     powerOfP = valuesPowerOfP[str.length - 1 - i];
-    //     let symbolHash = str[i].charCodeAt() * powerOfP;
-    //     hashVal = (hashVal + symbolHash) % m;
-    //     steps.push(hashVal);        
-    // }
 
     for(let sub = 0; sub < countSubstrings; sub++){
-        console.log(inputLines[skipLines + sub]);
+        
         let paramStr = inputLines[skipLines + sub].split(' ');
         let s = str.substring(Number(paramStr[0]) - 1, Number(paramStr[1])  );
 
         hashVal = 0;
         for(let i = 0; i < s.length; i++){
-            //powerOfP = valuesPowerOfP[s.length - 1 - i];
             powerOfP = valuesPowerOfP[s.length - 1 - i];
-            let symbolHash = str[i].charCodeAt() * powerOfP;
+            let symbolHash = s[i].charCodeAt() * powerOfP;
             hashVal = (hashVal + symbolHash) % m;        
         }
 
         console.log(hashVal);
-
-
-    }
-
-    console.log(valuesPowerOfP);
-    
-    
+    }   
 }
 
 
