@@ -35,7 +35,6 @@ function solve() {
         powerOfP = (powerOfP * p) % m;
     }
 
-
     for(let sub = 0; sub < countSubstrings; sub++){
         
         let paramStr = inputLines[skipLines + sub].split(' ');
@@ -53,9 +52,9 @@ function solve() {
 }
 
 
-let input = `1000
-1000009
-abcdefgh
+let input = `550
+5669595
+gaqxbfhabzvewlhdkowlimilhglzkhjxqnhsonpcoszloskwuomyzcpagerftzwxajqpeddmbcoxrjmqhfrqlchjjfukmpkozcyzipedvpmmaixcjcbobifpsppbqbpcsohyysowxivctabkyumnlbtwjtojraznmavltmqaeihpqkkhvskpkatlwhkbfuqxdxsmkekdkkoxtrtpsdmzsadzewuofugsrrtyklmhruqudqxosfwvykotsvnaikeyilfbowszgdcuigxvczxorfhkftblnhnxflyseqfppootfncnioxhvaokmufbvsatvooakootzimozomwuqydfvkopkwsoqcghfyrqmvdwmvkkoifindjwwhifsijeovqhepqduhzgmnhtjnwupuuvmxzpyhkzmlkmkvkdyephvxhsvcfwqwjighpipfhzplfquvgrrtyuzwktdztbiybhblmkqjsuskklnurumyapxsuhnwcvfnedbtcbumxtrznlegrlceblqiqqboqaeasozphwevfqtmhzxhwnkuzpbdyzrfmsjkyyzudieqahioeymjuctqmhvxbxptlffgddjlvfhesjnesphwaequvybzzlncpktfuwlzrbxuobpvkttfyhmwlosmvylmceivthtddcgmgkcnlgbxmwgnrxnaszuayaecdpkfqnwowrbdwdmezzaepjjrjklotqhczejmkrpuniqfjojhalmvhmluicagclybvjqhvzjaafyexzebvttykygkcvituezqbhtquafdtigwgnjeqhetaxksyzqybeariecrykrserglxdmfcbqsfhiysqfsuygkfqybubndzfmrsutpcwsohwpkhhmejisdjitrwhyplplnrptopvogygqktolijskclnnoitexutoqceamlzxzbzohvirupvngokhhzcyevxzgtktkmbfqpdpyskuxwfzoauaheinhtfvriuwrcfenedramkthaaoqz
 7
 1 1
 1 5
