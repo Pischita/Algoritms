@@ -23,32 +23,32 @@ function solve() {
     let registered = {};
 
     let maxSequance = 0;
+    let i = 0, j = 0;
 
-    for(let j = 0; j < str.length - maxSequance; j++){
-        let registered = {};
-        let sequance = '';
-        for(let i = j; i < str.length; i++){
-            let letter = str[i];
-            if( !registered[letter]){
-                registered[letter] = true;
-                sequance += letter 
-            }else{
-                break;            
-            }
+    let set = new Set();
+
+    while(j < str.length){
+        let letter = str[j];
+        if( set.has(letter) ){
+            set.delete(str[i] );
+            i++;
+        }else{
+            set.add(letter);
+            j++;
+            if(set.size > maxSequance){
+                maxSequance = set.size;
+            }            
         }
 
-        if(sequance.length > maxSequance){
-            result.push(sequance);
-            maxSequance = sequance.length;
-        }
     }
-    console.log(maxSequance);
+
+   console.log(maxSequance);
     
     
 }
 
 
-let input = `ejkfuamrksxrqgsfnuubbkntgmgguqtmrpperyyafgnhsmymrajvowrlyjrvtizgowfkujcewwpypnjpipcdpfdoxuckrhvrzbsbxvxqoqwaqvsvvpptuqeunzqcmhiftlruxqxseqisxoszkrjrbmfdmlaaxaqjlzisedvfeprbnqyzxhvmdcjwfrqlcczywbdwoayatkbfowxclispgkelpuosgknuztrrlwidgppxtcfcjwgmkgkhdpqymbtiljnsnijiieoycvdgrsqeyytvrvpcvvxmupcuhiufzpgwmkcobgeoapuvycqbitlremumauhuhnlvnzaadmpugybktdfvkxwhldzpkqxndgvxgmlkczndnwbtvuzaadvpnylenbdelwthzgpoczwjfwxaqeoryrbbuzmlvwjwtivfbyeafdvstrcwlawjwrcfmsnzbbdgvgaktfvvfirynbzbquzekxjmcbaokldjjdmwaniznkmmmhluitefypvoasixvwxbgfxksnmxigrdpdgxdwacrijbkrzgxehiagirywvxosxykntgnxxgstanmeiydqcyyhgjktbycicmwtwzdwisxccvgjzgokvebmlngmonkdqeeozegtqzfqptqligfrpcxqhmveiwhjjnoicevcugwzvfityeheiirbwdrgdywwdgpxlvbbwszuqwuvniahtqytsbvtuqqybsxfxcmlzufpcbtkyptjjjpwfyfmyezvwnognhdzzdugdqymlrsxhqhywihmcilnbciizwnsnjakvcvfwzdbfboazbuaybaoeqgeutftdofrxypnxklysschvsqnpefkvpykoujzfmfetnwblunnluotrrjzrfhosoqbimdcmdhftqvimragczketsbumrfqwnpiiijplulyidmyxwoapgkvhrvxwnorloprhcoyfwczionqukbnzlxejjfeajpezdalmncupunfasxddgfstpziedqrllakbnbwbqtsiohxjw`;
+let input = `ojodx`;
 
 inputLines = input.split('\n');
 
