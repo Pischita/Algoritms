@@ -54,23 +54,47 @@ function solve() {
     const arr = inputLines[2].split(' ').map(item => Number(item)).sort(comparator);
 
     let result = new Set();
-    let history = new Set();
-    history.add(arr[0])
+    let history = new Map();
 
 
-    for (let b = 1; b < arr.length - 2; b++) {
-        for (let c = b + 1; c < arr.length - 1; c++) {
-            for (let d = c + 1; d < arr.length; d++) {
-                let target = searchNumber - (arr[b] + arr[c] + arr[d])
+    for (let a = 0; a < arr.length - 1; a++) {
+        for (let b = a + 1; b < arr.length; b++) {
+            let val = arr[a] + arr[b];
+            if (history.has(val)) {
+                let vArr = history.get(val);
+                vArr.push({
+                    a: arr[a],
+                    b: arr[b]
+                });
+            } else {
+                history.set(val, [{
+                    a: arr[a],
+                    b: arr[b]
+                }]);
+            }
+        }
+    }
 
-                if (history.has(target)) {
-                    let res = (`${target} ${arr[b]} ${arr[c]} ${arr[d]}`).split(' ').sort(comparator).join(' ');
-                    result.add(res);
+    console.log(history);
+
+    for (let c = 2; c < arr.length - 1; c++) {
+        for (let d = c + 1; d < arr.length; d++) {
+            let target = searchNumber - (arr[c] + arr[d]);
+
+            if (history.has(target)) {
+                let vArr = history.get(target);
+                for (let h of vArr) {
+                    if (h.a <= h.b && h.b <= arr[c] && arr[c] <= arr[d]) {
+                        let res = (`${h.a} ${h.b} ${arr[c]} ${arr[d]}`).split(' ').sort(comparator).join(' ');
+                        result.add(res);
+                    }
                 }
             }
         }
-        history.add(arr[b]);
+        //history.add(arr[b]);
     }
+
+
 
 
     result = Array.from(result).sort(comparatorGroup);
