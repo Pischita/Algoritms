@@ -75,17 +75,17 @@ function solve() {
 
     const skipLines = 1;
 
-    const hashTable = new HashTable(127);
+    const hashTable = new HashTable(1009);
 
     for (let i = 0; i < countCommand; i++) {
-        let [command, key, value] = inputLines[i + skipLines].split(' ');
+        let data = inputLines[i + skipLines].split(' ');
         let result = '';
-        if (command === 'get') {
-            result = hashTable.get(key);
-        } else if (command === 'put') {
-            hashTable.put(key, value);
-        } else if (command === 'delete') {
-            result = hashTable.delete(key);
+        if (data[0] === 'get') {
+            result = hashTable.get(data[1]);
+        } else if (data[0] === 'put') {
+            hashTable.put(data[1], data[2]);
+        } else if (data[0] === 'delete') {
+            result = hashTable.delete(data[1]);
         }
 
         if (result) {
@@ -98,7 +98,17 @@ function solve() {
 }
 
 
-let input = `
+let input = `10
+get 1
+put 1 10
+put 2 4
+get 1
+get 2
+delete 2
+get 2
+put 1 5
+get 1
+delete 2
 `;
 
 inputLines = input.split('\n');
