@@ -14,72 +14,58 @@ _reader.on('line', line => {
 // Когда ввод закончится, будет вызвана функция solve.
 process.stdin.on('end', solve);
 
-class HashTable{
-    constructor(size){
+class HashTable {
+    constructor(size = 127) {
         this._data = new Array(size);
         this._size = size;
     }
 
-    put(key, value){
-        if( !this._data[Number(key)] ){
-            this._data[Number(key)] = [];
-        }
-
-        if(this._data[Number(key)].length === 0){
-            this._data[Number(key)].push([key, value]);
-        }else{
-            for(let i = 0; i < this._data[Number(key)].length; i++){
-                let [k, ] = this._data[Number(key)][i];
-                if( k === key){                    
-                    this._data[Number(key)][i][1] = value; 
-                    
-                }
-            }
-        }
-        
+    _index(key) {
+        return Math.floor(Number(key) % this._size);
     }
 
-    get(key){
-        if( !this._data[Number(key)]){
+    put(key, value) {
+        let index = this._index(key);
+        if (!this._data[index]) {
+            this._data[index] = [];
+        }
+
+        let findIndex = this._data[index].findIndex(item => item[0] === key);
+        if(findIndex >=0){
+            this._data[index][findIndex][1] = value;
+        }else{
+            this._data[index].push([key, value]);
+        } 
+    }
+
+    get(key) {
+        let index = this._index(key);
+        if (!this._data[index]) {
             return 'None';
         }
 
-        if(this._data[Number(key)].length === 1){
-            return this._data[Number(key)][0][1];
-        }else{
-            // Несполько значений в одном хеше
-            for(let [k, value] of this._data[Number(key)]){
-                if( k === key){
-                    return value;
-                }
-            }
+        let element = this._data[index].find(item => item[0] === key);
+        if (element) {
+            return element[1];
+        } else {
+            return 'None';
         }
-
     }
 
-    delete(key){
-        if( !this._data[Number(key)]){
+    delete(key) {
+        let index = this._index(key);
+        if (!this._data[index]) {
             return 'None';
         }
 
-        let value;
-        if(this._data[Number(key)].length === 1){
-            value = this._data[Number(key)][0][1];
-            this._data[Number(key)] = undefined;
-        }else{
-            // Несполько значений в одном хеше            
-            for(let i = 0; i < this._data[Number(key)].length; i++){
-                let [k, value] = this._data[Number(key)][i];
-                if( k === key){                    
-                    value = this._data[Number(key)].splice(i, 1);
-                    value = value[1];
-                }
-            }
-        }
+        let value ='None';
 
+        let findIndex = this._data[index].findIndex(item => item[0] === key);
+        if(findIndex >=0){
+            value = this._data[index][findIndex][1];
+            this._data[index].splice(findIndex, 1);
+        } 
         return value;
-        
-        
     }
 }
 
@@ -89,38 +75,40 @@ function solve() {
 
     const skipLines = 1;
 
-    const hashTable = new HashTable(countCommand);
+    const hashTable = new HashTable(1009);
 
-    for(let i = 0; i < countCommand; i++){
+    for (let i = 0; i < countCommand; i++) {
         let [command, key, value] = inputLines[i + skipLines].split(' ');
         let result = '';
-        if(command === 'get'){
+        if (command === 'get') {
             result = hashTable.get(key);
-        }else if (command === 'put'){
+        } else if (command === 'put') {
             hashTable.put(key, value);
-        }else if(command === 'delete'){
+        } else if (command === 'delete') {
             result = hashTable.delete(key);
         }
 
-        if(result){
+        if (result) {
             console.log(result);
         }
-        
+
     }
 
-    
+
 }
 
 
-let input = `8
-get 9
-delete 9
-put 9 1
-get 9
-put 9 2
-get 9
-put 9 3
-get 9`;
+let input = `10
+get 1
+put 1 10
+put 2 4
+get 1
+get 2
+delete 2
+get 2
+put 1 5
+get 1
+delete 2`;
 
 inputLines = input.split('\n');
 
