@@ -27,15 +27,21 @@ class HashTable {
     put(key, value) {
         let index = this._index(key);
         if (!this._data[index]) {
-            this._data[index] = [];
+            this._data[index] = {};
         }
 
-        let findIndex = this._data[index].findIndex(item => item[0] === key);
-        if(findIndex >=0){
-            this._data[index][findIndex][1] = value;
+        if(this._data[index][key]){
+            this._data[index][key].value = value;
         }else{
-            this._data[index].push([key, value]);
-        } 
+            this._data[index][key] = {value : value};
+        }
+
+        // let findIndex = this._data[index].findIndex(item => item[0] === key);
+        // if(findIndex >=0){
+        //     this._data[index][findIndex][1] = value;
+        // }else{
+        //     this._data[index].push([key, value]);
+        // } 
     }
 
     get(key) {
@@ -44,12 +50,18 @@ class HashTable {
             return 'None';
         }
 
-        let element = this._data[index].find(item => item[0] === key);
-        if (element) {
-            return element[1];
-        } else {
+        if(this._data[index][key]){
+            return this._data[index][key].value;
+        }else{
             return 'None';
         }
+
+        // let element = this._data[index].find(item => item[0] === key);
+        // if (element) {
+        //     return element[1];
+        // } else {
+            
+        // }
     }
 
     delete(key) {
@@ -60,11 +72,17 @@ class HashTable {
 
         let value ='None';
 
-        let findIndex = this._data[index].findIndex(item => item[0] === key);
-        if(findIndex >=0){
-            value = this._data[index][findIndex][1];
-            this._data[index].splice(findIndex, 1);
-        } 
+        let obj = this._data[index][key];
+        if(obj){
+            value = obj.value;
+            delete this._data[index][key];
+        }
+
+        /*     let findIndex = this._data[index].findIndex(item => item[0] === key);
+            if(findIndex >=0){
+                value = this._data[index][findIndex][1];
+                this._data[index].splice(findIndex, 1);
+            } */ 
         return value;
     }
 }
@@ -75,7 +93,7 @@ function solve() {
 
     const skipLines = 1;
 
-    const hashTable = new HashTable(1009);
+    const hashTable = new HashTable(127);
 
     for (let i = 0; i < countCommand; i++) {
         let data = inputLines[i + skipLines].split(' ');
@@ -91,10 +109,7 @@ function solve() {
         if (result) {
             console.log(result);
         }
-
     }
-
-
 }
 
 
