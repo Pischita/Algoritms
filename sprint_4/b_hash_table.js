@@ -14,6 +14,8 @@ _reader.on('line', line => {
 // Когда ввод закончится, будет вызвана функция solve.
 process.stdin.on('end', solve);
 
+
+
 class HashTable {
     constructor(size = 127) {
         this._data = new Array(size);
@@ -27,21 +29,15 @@ class HashTable {
     put(key, value) {
         let index = this._index(key);
         if (!this._data[index]) {
-            this._data[index] = {};
+            this._data[index] = [];
         }
 
-        if(this._data[index][key]){
-            this._data[index][key].value = value;
+        let findIndex = this._data[index].findIndex(item => item[0] === key);
+        if(findIndex >=0){
+            this._data[index][findIndex][1] = value;
         }else{
-            this._data[index][key] = {value : value};
-        }
-
-        // let findIndex = this._data[index].findIndex(item => item[0] === key);
-        // if(findIndex >=0){
-        //     this._data[index][findIndex][1] = value;
-        // }else{
-        //     this._data[index].push([key, value]);
-        // } 
+            this._data[index].push([key, value]);
+        } 
     }
 
     get(key) {
@@ -50,18 +46,12 @@ class HashTable {
             return 'None';
         }
 
-        if(this._data[index][key]){
-            return this._data[index][key].value;
-        }else{
+        let element = this._data[index].find(item => item[0] === key);
+        if (element) {
+            return element[1];
+        } else {
             return 'None';
         }
-
-        // let element = this._data[index].find(item => item[0] === key);
-        // if (element) {
-        //     return element[1];
-        // } else {
-            
-        // }
     }
 
     delete(key) {
@@ -72,17 +62,11 @@ class HashTable {
 
         let value ='None';
 
-        let obj = this._data[index][key];
-        if(obj){
-            value = obj.value;
-            delete this._data[index][key];
-        }
-
-        /*     let findIndex = this._data[index].findIndex(item => item[0] === key);
-            if(findIndex >=0){
-                value = this._data[index][findIndex][1];
-                this._data[index].splice(findIndex, 1);
-            } */ 
+        let findIndex = this._data[index].findIndex(item => item[0] === key);
+        if(findIndex >=0){
+            value = this._data[index][findIndex][1];
+            this._data[index].splice(findIndex, 1);
+        } 
         return value;
     }
 }
@@ -93,17 +77,17 @@ function solve() {
 
     const skipLines = 1;
 
-    const hashTable = new HashTable(127);
+    const hashTable = new HashTable(countCommand);
 
     for (let i = 0; i < countCommand; i++) {
-        let data = inputLines[i + skipLines].split(' ');
+        let [command, key, value] = inputLines[i + skipLines].split(' ');
         let result = '';
-        if (data[0] === 'get') {
-            result = hashTable.get(data[1]);
-        } else if (data[0] === 'put') {
-            hashTable.put(data[1], data[2]);
-        } else if (data[0] === 'delete') {
-            result = hashTable.delete(data[1]);
+        if (command === 'get') {
+            result = hashTable.get(key);
+        } else if (command === 'put') {
+            hashTable.put(key, value);
+        } else if (command === 'delete') {
+            result = hashTable.delete(key);
         }
 
         if (result) {
