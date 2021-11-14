@@ -1,3 +1,20 @@
+/* 
+    ID правильного решения 57551822 
+
+    На основании входных "документов" для каждого слова создается в хеш-таблице
+    индекс, где каждому слову соответствует в каких документах это слово присутствует.
+    
+    При разборе поисковой строки, поисковая сторока резделяется на слова.
+    Для каждого слова производится поиск в хеш-таблице индекса в кахих документах это слово присутствует 
+    и добавляется в массив вхождений. В конце производится сортировка массива вхождений, 
+    где документ с найбольшим совпадением слов имеен найвысший приоритет.
+
+
+    Пространственная сложность алгоритма линейная О(n)
+    Временная сложность алгоритма так же линейная O(n)
+
+*/
+
 const { countReset } = require('console');
 const _readline = require('readline');
 
@@ -57,15 +74,10 @@ function solve() {
         const queryString = inputLines[skipLines + i];
         let queryWords = queryString.split(' ');
         const relevance = [];
-        //const uniqueWords = new Set();
+
         queryWords = [...new Set(queryWords)];
         for(word of queryWords){
-            // if(uniqueWords.has(word)){
-            //     continue;
-            // }else{
-            //     uniqueWords.add(word);
-            // }
-
+            
             if(index.has(word)){
                 let wordIndexes = index.get(word);
                 for(let ind of wordIndexes){

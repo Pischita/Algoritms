@@ -1,3 +1,17 @@
+/* 
+    ID правильного решения  
+
+    Хеш-таблица для хранения элементов внутри использует массив.
+    При добавлении в хеш-таблицу вычисляется хеш, для определения
+    индекса корзины. Для устранения коллизий исползуется связанный список.
+    
+    Пространственная сложность алгоритма линейная О(n)
+
+    Временная сложность алгоритма стремится к O(1),
+    но при недостаточном количестве корзин O(количества элементов в текущей корзине)
+
+*/
+
 const _readline = require('readline');
 
 const _reader = _readline.createInterface({
@@ -6,7 +20,6 @@ const _reader = _readline.createInterface({
 
 let inputLines = [];
 
-
 _reader.on('line', line => {
     inputLines.push(line);
 });
@@ -14,7 +27,13 @@ _reader.on('line', line => {
 // Когда ввод закончится, будет вызвана функция solve.
 process.stdin.on('end', solve);
 
-
+class List{
+    constructor(key, value, next){
+        this.key = key;
+        this.value = value;
+        this.next = next;
+    }
+}
 
 class HashTable {
     constructor(size = 127) {
@@ -28,46 +47,69 @@ class HashTable {
 
     put(key, value) {
         let index = this._index(key);
-        if (!this._data[index]) {
-            this._data[index] = [];
-        }
-
-        let findIndex = this._data[index].findIndex(item => item[0] === key);
-        if(findIndex >=0){
-            this._data[index][findIndex][1] = value;
+        if (this._data[index]) {
+            let head = this._data[index];
+            let isChange = false;
+            while(head){
+                if(head.key === key){
+                    head.value = value;
+                    isChange = true;
+                }                
+                head = head.next;
+            }
+            if(!isChange){
+               this._data[index] = new List(key, value, this._data[index]);     
+            }
+            
         }else{
-            this._data[index].push([key, value]);
-        } 
+            this._data[index] = new List(key, value);
+        }
     }
 
     get(key) {
+        let result = 'None';
         let index = this._index(key);
         if (!this._data[index]) {
-            return 'None';
+            return result;
+        }
+       
+        let head = this._data[index];
+        while(head){
+            if(head.key === key){
+                result = head.value;
+                return result;
+            }
+            head = head.next;
         }
 
-        let element = this._data[index].find(item => item[0] === key);
-        if (element) {
-            return element[1];
-        } else {
-            return 'None';
-        }
+        return result;
     }
 
     delete(key) {
+        let result = 'None';
         let index = this._index(key);
         if (!this._data[index]) {
-            return 'None';
+            return result;
         }
 
-        let value ='None';
+        let head = this._data[index];
+        let previous = undefined;
 
-        let findIndex = this._data[index].findIndex(item => item[0] === key);
-        if(findIndex >=0){
-            value = this._data[index][findIndex][1];
-            this._data[index].splice(findIndex, 1);
-        } 
-        return value;
+        while(head){
+
+            if(head.key === key){
+                result = head.value;
+                if(previous){
+                    previous.next = head.next;
+                }else{
+                    this._data[index] = head.next;    
+                }
+                return result;
+            }
+            previous = head;
+            head = head.next;
+        }
+        return result;        
     }
 }
 
@@ -77,7 +119,7 @@ function solve() {
 
     const skipLines = 1;
 
-    const hashTable = new HashTable(countCommand);
+    const hashTable = new HashTable(1009);
 
     for (let i = 0; i < countCommand; i++) {
         let [command, key, value] = inputLines[i + skipLines].split(' ');
@@ -98,16 +140,16 @@ function solve() {
 
 
 let input = `10
-get 1
-put 1 10
-put 2 4
-get 1
-get 2
-delete 2
-get 2
-put 1 5
-get 1
-delete 2
+put 5 701
+put 5 364
+put 5 134
+get 5
+put 5 660
+get 5
+put 5 578
+delete 5
+get 5
+delete 5
 `;
 
 inputLines = input.split('\n');
