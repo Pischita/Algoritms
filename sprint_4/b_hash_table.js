@@ -1,5 +1,5 @@
 /* 
-    ID правильного решения  
+    ID правильного решения 57593617 
 
     Хеш-таблица для хранения элементов внутри использует массив.
     При добавлении в хеш-таблицу вычисляется хеш, для определения
@@ -121,6 +121,7 @@ function solve() {
 
     const hashTable = new HashTable(1009);
 
+    let output = ""; 
     for (let i = 0; i < countCommand; i++) {
         let [command, key, value] = inputLines[i + skipLines].split(' ');
         let result = '';
@@ -133,9 +134,11 @@ function solve() {
         }
 
         if (result) {
-            console.log(result);
+            output += result + '\n';
         }
     }
+
+    console.log(output);
 }
 
 
