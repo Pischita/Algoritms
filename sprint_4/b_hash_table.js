@@ -141,20 +141,3 @@ function solve() {
     console.log(output);
 }
 
-
-let input = `10
-put 5 701
-put 5 364
-put 5 134
-get 5
-put 5 660
-get 5
-put 5 578
-delete 5
-get 5
-delete 5
-`;
-
-inputLines = input.split('\n');
-
-solve();
