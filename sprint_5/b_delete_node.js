@@ -86,16 +86,11 @@ function remove(node, key) {
                      node.right = deletedNode.right;
                  }else{
                     node.right = null;  
-                 }
-                 
-                 
+                 }   
              }else{
                  return null;
              }
-             
-    
         }
-    
     }
     
     return node;
