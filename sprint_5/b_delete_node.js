@@ -1,3 +1,12 @@
+/*
+ID правильного решения - 59907266
+
+Пространственная сложность алгоритма будет O(n),
+где n - количество уникальных ключей
+
+Временная сложность алгоритма будет O(log N)
+*/
+
 function getLeaf(node, side='left'){
     let currentNode = undefined;
     let parent = undefined;
@@ -25,7 +34,6 @@ function getLeaf(node, side='left'){
         }
         
         return currentNode;
-
     }
 
 }
@@ -73,7 +81,6 @@ function remove(node, key) {
 
             }
         }else{
-            //console.lof('heleted head');
              node = getLeaf(deletedNode);
              if(node != null){
                  if(node != deletedNode.left){
@@ -97,39 +104,3 @@ function remove(node, key) {
     
 }
 
-// class Node { 
-//     constructor(value, left = null, right = null) { 
-//         this.value = value; 
-//         this.left = left; 
-//         this.right = right; 
-//     } 
-// }
-
-
-// function test() {
-//     // var node1 = new Node(2, null, null);
-//     // var node2 = new Node(3, node1, null);
-//     // var node3 = new Node(1, null, node2);
-//     // var node4 = new Node(6, null, null);
-//     // var node5 = new Node(8, node4, null);
-//     // var node6 = new Node(10, node5, null);
-//     // var node7 = new Node(5, node3, node6);
-//     // //var newHead = remove(node7, 10);
-//     // //console.assert(newHead.value === 5);
-//     // //console.assert(newHead.right === node5);
-//     // //console.assert(newHead.right.value === 8);
-
-//     // let node11 = new Node(11);
-//     // node6.right = node11;
-//     // var newHead = remove(node7, 1);
-//     // console.log(newHead);
-
-//     let node0 = new Node(15, null, null)
-//     var node1 = new Node(20, node0, null);
-//     var node2 = new Node(10, null, node1);
-//     var newHead = remove(node2, 10);
-//      console.log(newHead);
-    
-// }
-
-// test();
