@@ -1,8 +1,10 @@
 /*
 ID правильного решения - 59907266
 
-Пространственная сложность алгоритма будет O(n),
-где n - количество уникальных ключей
+Для удаления узла из дерева первоначально будет находиться в дереве узел который нужно удалить.
+После среди его потомков будет находиться самый правый элемент в левом поддереве, если левое поддерево отсутствует 
+будет будет искаться самый левый элемент в правом поддереве.
+После этого найденный узел будет заменятся на удаляемый узел и в родителях будут заменятся ссылки.
 
 Временная сложность алгоритма будет O(log N)
 */
@@ -41,14 +43,12 @@ function getLeaf(node, side='left'){
 
 function remove(node, key) {
     let currentNode = node;
-    let isFinded = false;
     let deletedNode = undefined;
     let parentForDeleted = undefined;
 
-    while( !isFinded && currentNode != null){
+    while(currentNode != null){
         if(key === currentNode.value){
             deletedNode = currentNode;
-            isFinded = true;
             break;
         }
          
