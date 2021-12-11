@@ -19,7 +19,30 @@ let adjacencyList = [];
 let result = '';
 
 function DFS(i) {
-    colors[i] = 'gray';
+    const stack = [];
+    stack.push(i);
+
+    while (stack.length > 0) {
+        let v = stack.shift();
+        if (colors[v] === 'white') {
+            result += (v) + ' ';
+            colors[v] = 'gray';
+
+            if (adjacencyList[v]) {
+                adjacencyList[v].forEach((node, idx) => {
+                    if (colors[node] === 'white') {
+                        stack.unshift(node);
+                    }
+                });
+            }
+
+            stack.push(v);
+        } else if (colors[v] === 'gray') {
+            colors[v] = 'black';
+        }
+    }
+
+    /* colors[i] = 'gray';
     result += (i) + ' ';
     if (adjacencyList[i]) {
         adjacencyList[i].forEach((node, idx) => {
@@ -30,7 +53,7 @@ function DFS(i) {
         });
     }
 
-    colors[i] = 'black';
+    colors[i] = 'black'; */
 }
 
 
@@ -58,23 +81,28 @@ function solve() {
     }
 
     for (let i = 1; i <= countVertex; i++) {
-        if(adjacencyList[i] && Array.isArray(adjacencyList[i])){
+        if (adjacencyList[i] && Array.isArray(adjacencyList[i])) {
             adjacencyList[i].sort((a, b) => {
-            if (a < b) {
-                return -1;
-            } else if (b < a) {
-                return 1
-            } else {
-                return 0;
-            }
-        })
+                if (a < b) {
+                    return 1;
+                } else if (b < a) {
+                    return -1
+                } else {
+                    return 0;
+                }
+            })
         }
-        
+
     }
 
 
     let curentVertex = Number(inputLines[countEdges + 1]);
-    DFS(curentVertex);
+    try {
+        DFS(curentVertex);
+    } catch (error) {
+        console.log(error);
+    }
+
     console.log(result);
 
     // for (let i = 0; i < countVertex; i++){
@@ -84,15 +112,12 @@ function solve() {
 }
 
 
-let input = `7 6
-7 4
-7 3
-6 7
-7 2
-5 7
-7 1
-1
-`;
+let input = `4 4
+3 2
+4 3
+1 4
+1 2
+3`;
 
 inputLines = input.split('\n');
 
