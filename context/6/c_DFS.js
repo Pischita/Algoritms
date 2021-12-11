@@ -17,6 +17,7 @@ process.stdin.on('end', solve);
 let colors = [];
 let adjacencyList = [];
 let result = '';
+let sorted =[];
 
 function DFS(i) {
     const stack = [];
@@ -29,6 +30,22 @@ function DFS(i) {
             colors[v] = 'gray';
 
             if (adjacencyList[v]) {
+                if( ! sorted[v]){
+                    if (adjacencyList[v] && Array.isArray(adjacencyList[v])) {
+                        adjacencyList[v].sort((a, b) => {
+                            if (a < b) {
+                                return 1;
+                            } else if (b < a) {
+                                return -1
+                            } else {
+                                return 0;
+                            }
+                        })
+                    }
+                    sorted[v] = true;
+                }
+
+
                 adjacencyList[v].forEach((node, idx) => {
                     if (colors[node] === 'white') {
                         stack.unshift(node);
@@ -42,18 +59,19 @@ function DFS(i) {
         }
     }
 
-    /* colors[i] = 'gray';
-    result += (i) + ' ';
-    if (adjacencyList[i]) {
-        adjacencyList[i].forEach((node, idx) => {
-            let v = Number(node);
-            if (colors[v] === 'white') {
-                DFS(v);
-            }
-        });
+}
+
+function insertionSort(arr, value){
+    arr.push(undefined);
+    
+    let i = arr.length -1;
+    while(i > 0 && value > arr[i-1]){
+        arr[i] = arr[i -1];
+        i--;
     }
 
-    colors[i] = 'black'; */
+    arr[i] = value;
+
 }
 
 
@@ -64,6 +82,7 @@ function solve() {
 
     adjacencyList = new Array(countVertex + 1);
     colors = new Array(countVertex + 1).fill('white');
+    sorted = new Array(countVertex + 1).fill(false);
 
     for (let i = 1; i <= countEdges; i++) {
         let edgeData = inputLines[i].split(' ');
@@ -73,29 +92,15 @@ function solve() {
             adjacencyList[vertex] = [];
         }
         adjacencyList[vertex].push(vertex2);
-
+    
         if (adjacencyList[vertex2] === undefined) {
             adjacencyList[vertex2] = [];
         }
         adjacencyList[vertex2].push(vertex);
+    
     }
 
-    for (let i = 1; i <= countVertex; i++) {
-        if (adjacencyList[i] && Array.isArray(adjacencyList[i])) {
-            adjacencyList[i].sort((a, b) => {
-                if (a < b) {
-                    return 1;
-                } else if (b < a) {
-                    return -1
-                } else {
-                    return 0;
-                }
-            })
-        }
-
-    }
-
-
+    
     let curentVertex = Number(inputLines[countEdges + 1]);
     try {
         DFS(curentVertex);
@@ -104,10 +109,6 @@ function solve() {
     }
 
     console.log(result);
-
-    // for (let i = 0; i < countVertex; i++){
-    //     console.log(adjacencyList[i].join(' '));
-    // }
 
 }
 
