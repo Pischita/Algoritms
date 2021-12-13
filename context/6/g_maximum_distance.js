@@ -24,10 +24,9 @@ function BFS(i) {
 
     const planned = [];
     planned.push(i);
-
+    distance[i] = 0;
     while (planned.length > 0) {
         let v = planned.shift();
-
 
         if (colors[v] === 'white') {
             result += (v) + ' ';
@@ -50,9 +49,13 @@ function BFS(i) {
                 }
 
 
-                adjacencyList[v].forEach((node, idx) => {
+                adjacencyList[v].forEach((node) => {
                     if (colors[node] === 'white') {
                         planned.push(node);
+                        if(distance[node] === undefined){
+                            distance[node] = distance[v] + 1;
+                        }
+                        
                     }
                 });
             }
@@ -86,7 +89,7 @@ function solve() {
     adjacencyList = new Array(countVertex + 1);
     colors = new Array(countVertex + 1).fill('white');
     sorted = new Array(countVertex + 1).fill(false);
-    distance = new Array(countVertex + 1).fill(false);
+    distance = new Array(countVertex + 1).fill(undefined);
 
     for (let i = 1; i <= countEdges; i++) {
         let edgeData = inputLines[i].split(' ');
@@ -108,14 +111,31 @@ function solve() {
     let curentVertex = Number(inputLines[countEdges + 1]);
 
     BFS(curentVertex);
-    console.log(result);
+
+    let maxDistance = 0;
+    distance.forEach(value =>{
+        if(value > maxDistance){
+            maxDistance = value;
+        }
+    });
+    console.log(maxDistance);
+
+
+
 
 }
 
 
-let input = `2 1
-2 1
-1`;
+let input = `6 8
+6 1
+1 3
+5 1
+3 5
+3 4
+6 5
+5 2
+6 2
+4`;
 
 inputLines = input.split('\n');
 
