@@ -56,14 +56,12 @@ function solve() {
     let result = '';
     for (let i = 1; i <= countVertex; i++) {
         if( colors[i] ==='white' ){
-            topSort(i);
-                       
+            topSort(i);          
         }
     }
 
-    
-    console.log(order.join(' '));
-    
+        
+    console.log(order.join(' '));  
 
 
 }
