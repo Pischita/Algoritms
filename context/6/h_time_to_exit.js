@@ -39,20 +39,21 @@ let leave = [];
 
 function DFS(i) {
     const stack = [];
-    stack.unshift(i)
+    stack.push(i)
     while (stack.length > 0) {
-        let v = stack.shift();
+        let v = stack.pop();
         if (colors[v] === 'white') {
             colors[v] = 'gray';
             entry[v] = time++;
-            stack.unshift(v);
+            stack.push(v);
             if (Array.isArray(adjacencyList[v])) {
                 adjacencyList[v].forEach(vertex => {
                     if (colors[vertex] === 'white') {
-                        stack.unshift(vertex);
+                        stack.push(vertex);
                     }
                 });
             }
+            
 
         } else if (colors[v] === 'gray') {
             colors[v] = 'black';
@@ -103,7 +104,6 @@ function solve() {
             console.log(`${entry[i]} ${leave[i]}`);
         }
     }
-
 
 }
 

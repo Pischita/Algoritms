@@ -20,15 +20,62 @@ let result = '';
 let sorted =[];
 let distance = [];
 
+
+class QueueeNode{
+    constructor(value, next){
+        this.value = value;
+        this.next = next;
+    }
+}
+class Queuee{
+    constructor(){
+        this.head = undefined;
+        this.tail = undefined;
+        this.length = 0;
+    }
+
+    push(value){
+        const node = new QueueeNode(value);
+        if(this.head === undefined){
+            this.head = node;            
+        }
+
+        if(this.tail){
+            this.tail.next = node;
+        }
+        this.tail = node;
+        
+        
+        this.length++;
+    }
+
+    pop(){
+        if(this.length === 0){
+            return undefined;
+        }
+
+        let headNode = this.head;
+        this.head = this.head.next;
+        this.length--;
+
+        if(this.length === 0){
+            this.head = undefined;
+            this.tail = undefined;
+        }
+
+        return headNode.value;
+    }
+}
+
+
 function BFS(i) {
 
-    const planned = [];
+
+    const planned = new Queuee;
     planned.push(i);
 
     while (planned.length > 0) {
-        let v = planned.shift();
-
-
+        let v = planned.pop();
         if (colors[v] === 'white') {
             result += (v) + ' ';
             colors[v] = 'gray';
@@ -36,19 +83,10 @@ function BFS(i) {
             if (adjacencyList[v]) {
                 if( ! sorted[v]){
                     if (adjacencyList[v] && Array.isArray(adjacencyList[v])) {
-                        adjacencyList[v].sort((a, b) => {
-                            if (a < b) {
-                                return -1;
-                            } else if (b < a) {
-                                return 1
-                            } else {
-                                return 0;
-                            }
-                        })
+                        adjacencyList[v].sort((a, b) => a-b);
                     }
                     sorted[v] = true;
                 }
-
 
                 adjacencyList[v].forEach((node, idx) => {
                     if (colors[node] === 'white') {
@@ -61,19 +99,6 @@ function BFS(i) {
             
         }
     }
-
-}
-
-function insertionSort(arr, value){
-    arr.push(undefined);
-    
-    let i = arr.length -1;
-    while(i > 0 && value > arr[i-1]){
-        arr[i] = arr[i -1];
-        i--;
-    }
-
-    arr[i] = value;
 
 }
 
@@ -113,9 +138,12 @@ function solve() {
 }
 
 
-let input = `2 1
-2 1
-1`;
+let input = `4 4
+1 2
+2 3
+3 4
+1 4
+3`;
 
 inputLines = input.split('\n');
 

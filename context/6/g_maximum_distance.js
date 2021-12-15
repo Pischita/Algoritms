@@ -14,6 +14,53 @@ _reader.on('line', line => {
 // Когда ввод закончится, будет вызвана функция solve.
 process.stdin.on('end', solve);
 
+class QueueeNode{
+    constructor(value, next){
+        this.value = value;
+        this.next = next;
+    }
+}
+class Queuee{
+    constructor(){
+        this.head = undefined;
+        this.tail = undefined;
+        this.length = 0;
+    }
+
+    push(value){
+        const node = new QueueeNode(value);
+        if(this.head === undefined){
+            this.head = node;            
+        }
+
+        if(this.tail){
+            this.tail.next = node;
+        }
+        this.tail = node;
+        
+        
+        this.length++;
+    }
+
+    pop(){
+        if(this.length === 0){
+            return undefined;
+        }
+
+        let headNode = this.head;
+        this.head = this.head.next;
+        this.length--;
+
+        if(this.length === 0){
+            this.head = undefined;
+            this.tail = undefined;
+        }
+
+        return headNode.value;
+    }
+}
+
+
 let colors = [];
 let adjacencyList = [];
 let result = '';
@@ -22,11 +69,11 @@ let distance = [];
 
 function BFS(i) {
 
-    const planned = [];
+    const planned = new Queuee;
     planned.push(i);
     distance[i] = 0;
     while (planned.length > 0) {
-        let v = planned.shift();
+        let v = planned.pop();
 
         if (colors[v] === 'white') {
             result += (v) + ' ';
@@ -119,10 +166,6 @@ function solve() {
         }
     });
     console.log(maxDistance);
-
-
-
-
 }
 
 

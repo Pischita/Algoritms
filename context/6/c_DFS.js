@@ -1,89 +1,53 @@
 const _readline = require('readline');
-
 const _reader = _readline.createInterface({
     input: process.stdin
 });
-
 let inputLines = [];
-
-
 _reader.on('line', line => {
     inputLines.push(line);
 });
-
 // Когда ввод закончится, будет вызвана функция solve.
 process.stdin.on('end', solve);
 
-let colors = [];
-let adjacencyList = [];
-let result = '';
-let sorted =[];
-
-function DFS(i) {
+function DFS(i, adjacencyList) {
+	const WHITE = 0;
+    const GRAY = 1;
+    const BLACK = 2;
+	let result = '';
+    const colors = new Array(adjacencyList.length).fill(WHITE);
+    const sorted = new Array(adjacencyList.length).fill(false);
     const stack = [];
     stack.push(i);
-
     while (stack.length > 0) {
-        let v = stack.shift();
-        if (colors[v] === 'white') {
+        let v = stack.pop();
+        if (colors[v] === WHITE) {
             result += (v) + ' ';
-            colors[v] = 'gray';
-
+            colors[v] = GRAY;
             if (adjacencyList[v]) {
                 if( ! sorted[v]){
-                    if (adjacencyList[v] && Array.isArray(adjacencyList[v])) {
-                        adjacencyList[v].sort((a, b) => {
-                            if (a < b) {
-                                return 1;
-                            } else if (b < a) {
-                                return -1
-                            } else {
-                                return 0;
-                            }
-                        })
-                    }
+                    if (adjacencyList[v]) {
+						adjacencyList[v].sort((a, b) => b - a);
+					}
                     sorted[v] = true;
                 }
-
-
                 adjacencyList[v].forEach((node, idx) => {
-                    if (colors[node] === 'white') {
-                        stack.unshift(node);
+                    if (colors[node] === WHITE) {
+                        stack.push(node);
                     }
                 });
             }
-
             stack.push(v);
-        } else if (colors[v] === 'gray') {
-            colors[v] = 'black';
+        } else if (colors[v] === GRAY) {
+            colors[v] = BLACK;
         }
     }
-
+    return result;
 }
-
-function insertionSort(arr, value){
-    arr.push(undefined);
-    
-    let i = arr.length -1;
-    while(i > 0 && value > arr[i-1]){
-        arr[i] = arr[i -1];
-        i--;
-    }
-
-    arr[i] = value;
-
-}
-
-
 function solve() {
     const data = inputLines[0].split(' ');
     const countVertex = Number(data[0]);
     const countEdges = Number(data[1]);
-
-    adjacencyList = new Array(countVertex + 1);
-    colors = new Array(countVertex + 1).fill('white');
-    sorted = new Array(countVertex + 1).fill(false);
-
+    let adjacencyList = new Array(countVertex + 1);
     for (let i = 1; i <= countEdges; i++) {
         let edgeData = inputLines[i].split(' ');
         let vertex = Number(edgeData[0]);
@@ -92,34 +56,15 @@ function solve() {
             adjacencyList[vertex] = [];
         }
         adjacencyList[vertex].push(vertex2);
-    
         if (adjacencyList[vertex2] === undefined) {
             adjacencyList[vertex2] = [];
         }
         adjacencyList[vertex2].push(vertex);
-    
     }
-
-    
     let curentVertex = Number(inputLines[countEdges + 1]);
     try {
-        DFS(curentVertex);
+    	console.log(DFS(curentVertex, adjacencyList));
     } catch (error) {
         console.log(error);
     }
-
-    console.log(result);
-
 }
-
-
-let input = `4 4
-3 2
-4 3
-1 4
-1 2
-3`;
-
-inputLines = input.split('\n');
-
-solve();

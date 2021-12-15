@@ -25,7 +25,7 @@ function DFS(i, component) {
     stack.push(i);
 
     while (stack.length > 0) {
-        let v = stack.shift();
+        let v = stack.pop();
         if (colors[v] === 'white') {
             result += (v) + ' ';
             colors[v] = 'gray';
@@ -48,9 +48,9 @@ function DFS(i, component) {
                 }
 
 
-                adjacencyList[v].forEach((node, idx) => {
+                adjacencyList[v].forEach((node) => {
                     if (colors[node] === 'white') {
-                        stack.unshift(node);
+                        stack.push(node);
                     }
                 });
             }
