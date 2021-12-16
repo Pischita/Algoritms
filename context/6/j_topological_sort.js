@@ -31,7 +31,7 @@ function topSort(i){
     }
 
     colors[i] = 'black';
-    order.unshift(i);
+    order.push(i);
 }
 
 
@@ -60,8 +60,11 @@ function solve() {
         }
     }
 
+   while(order.length > 0){
+       result += order.pop() + ' ';
+   }
         
-    console.log(order.join(' '));  
+    console.log(result);  
 
 
 }
