@@ -62,7 +62,8 @@ function findMST(edges) {
         not_added[i] = i;
     }
 
-    let v = not_added[0];
+    let v = not_added[2];
+    minimum_spanning_tree.push(v);
     let vertexEdges = add_vertex(v);
     let currentVertex = v;
 
@@ -119,7 +120,7 @@ function solve() {
     }
 
     findMST(edges);
-    console.log(edges);
+    //console.log(edges);
 
 }
 
