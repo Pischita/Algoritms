@@ -63,20 +63,21 @@ function findMST(edges, startVertex) {
         not_added[i] = i;
     }
 
-    let v = not_added[startVertex];
-    minimum_spanning_tree.push(v);
-    let vertexEdges = add_vertex(v);
-    let currentVertex = v;
+    
+    
+    
 
-    while(not_added.length > 0 && vertexEdges.length > 0){
+    minimum_spanning_tree.push(not_added[0]);
+    let vertexEdges = [];
 
+    while(not_added.length v> 0){
+        let currentVertex = not_added[0];        
+        vertexEdges = add_vertex(currentVertex);
         v = extractMaximum(currentVertex, vertexEdges);
 
         let isNotVisited = not_added.findIndex( vertex => vertex === v);
         if(isNotVisited != -1){
             minimum_spanning_tree.push(v);
-            vertexEdges = add_vertex(v);
-            currentVertex = v;
         }
     }
 
@@ -141,32 +142,31 @@ function solve() {
     }else{
        console.log(maxResult); 
     }
-    
-
 }
 
 
 let input = `10 20
-8 7 9
-4 10 7
-6 6 2
-8 10 1
-10 6 1
-5 7 8
-1 9 6
-10 3 3
-10 5 8
-6 6 6
-5 7 9
-5 2 4
-3 1 1
-10 7 8
-8 4 6
-5 5 7
-7 8 6
-5 10 2
-10 1 3
-3 5 9
+9 10 4
+2 2 4
+4 2 8
+10 5 3
+1 10 6
+7 4 2
+10 10 6
+3 7 4
+8 9 4
+8 10 7
+6 10 10
+2 8 8
+3 8 1
+3 10 3
+9 5 8
+10 10 2
+1 8 1
+10 1 5
+3 6 10
+9 10 8
+
 `;
 
 inputLines = input.split('\n');
