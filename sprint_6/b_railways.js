@@ -51,6 +51,8 @@ function findPath(startVertex){
         }
     }
 
+
+
     return result;
 
 }
@@ -87,7 +89,17 @@ function solve() {
         }
     }
 
-    let result = findPath(0);
+
+
+    
+
+    let startVertex = 0;
+
+    let result = findPath(startVertex);
+
+    while( result === 'YES' && (startVertex = colors.findIndex(item => item=== COLORS.WHITE) ) > 0 ){
+        result = findPath(startVertex);
+    }
 
     console.log(result);    
 }
