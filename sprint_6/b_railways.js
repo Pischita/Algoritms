@@ -1,3 +1,17 @@
+/**
+ * ID правильного решения 63399183
+ * 
+ *  Изначельно строится матрица смежности для хранения путей в ориентированном графе.
+ * Если путь В - это прямой путь в следующий город.
+ * Если путь R - это обратный путь в предыдущий город.
+ * 
+ * Если в процессе прохождения графа с помощью алгоритма BFS образуется петля, 
+ * то такая карта дорог считается не оптимальной.
+ * 
+ * Временная сложность будет O(V^2)
+ * Пространственная сложность алгоритма O(V^2)
+ */
+
 const _readline = require('readline');
 
 const _reader = _readline.createInterface({
@@ -58,10 +72,8 @@ function findPath(startVertex){
 }
 
 function solve() {
-    const countVertex = Number(inputLines[0]);
-    
+    const countVertex = Number(inputLines[0]);    
     colors = new Array(countVertex).fill(COLORS.WHITE);
-
     for(let i = 0; i < countVertex; i++){
         edges[i] = new Array(countVertex);
     }
@@ -87,11 +99,7 @@ function solve() {
                 edges[start+j][i] = 1;
             }
         }
-    }
-
-
-
-    
+    }    
 
     let startVertex = 0;
 
@@ -104,18 +112,3 @@ function solve() {
     console.log(result);    
 }
 
-
-let input = `10
-RRBRRBRRR
-BBBBBBRB
-BBRBRRR
-RRBRRR
-RBRRR
-BBRR
-RRR
-RR
-B`;
-
-inputLines = input.split('\n');
-
-solve();
