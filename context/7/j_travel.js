@@ -18,14 +18,17 @@ function solve() {
     let s1 = inputLines[1].split(' ').map(item =>Number(item));
    
     let dp = new Array(s1.length);
+    let path = new Array(s1.length);
 
     for(let i = 0; i < s1.length; i++){
         dp[i] = 1;
+        path[i] = -1;
     
         for(let j = 0; j < i; j++){
             if(s1[j] < s1[i]){
                 if(1+dp[j] > dp[i]){
                     dp[i] = 1+dp[j];
+                    path[i] = j;
                 }    
             }
         }
@@ -36,24 +39,36 @@ function solve() {
     let cuttentValue = 0;
     let result = [];
     let maximumLength = 1;
+    let maximumIndex = 0;
 
     for(let i = 0; i < dp.length; i++){
         if(dp[i] > maximumLength){
             maximumLength = dp[i];
+            maximumIndex = i;
         }
-
-        if(cuttentValue < dp[i]){
-            result.push(i + 1);
-            cuttentValue = dp[i];
-        }        
     }
 
+    let i = maximumIndex;
+    if(i === 0){
+        result.push(1);
+    }
+    
+    while(i > 0){
+        result.push(i+1);
+        i = path[i];
+
+        if(i === 0){
+            result.push(i+1);
+        }
+    }
+
+
     console.log(maximumLength);
-    console.log(result.join(' '));
+    console.log(result.reverse().join(' '));
 }
 
-let input = `5
-4 2 9 1 13
+let input = `1
+5
 
 
 
