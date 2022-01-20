@@ -33,9 +33,7 @@ function solve() {
         let cost = dp[i][0];
         
         for(j = 1; j <= capacity; j++){
-            if(j < cost){
-                dp[i][j] = 0;
-            }else if(j === cost){
+            if(j === cost){
                 dp[i][j] = cost;
             }else{
                 let topValue = 0;
@@ -48,25 +46,23 @@ function solve() {
                         partValue = dp[i-1][partIndex] + cost;
                     }
                 }    
-                
-
-                dp[i][j] = Math.max(dp[i][j-1], topValue, partValue );
+                let prevValue = 0;
+                if(j > 1){
+                    prevValue = dp[i][j-1];
+                }
+                dp[i][j] = Math.max(prevValue, topValue, partValue );
             }
 
         }
         
     }
 
-   console.log(dp);
+   //console.log(dp);
    if(capacity > 0){
       console.log(dp[countBullions-1][capacity]); 
    }else{
        console.log(0);
-   }
-
-    
-
-   
+   }   
 }
 
 
