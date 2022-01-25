@@ -1,3 +1,14 @@
+/*
+ID правильного решения - 64270722	
+
+Для решения используется алгоритм используемый в этой статье
+https://ru.wikipedia.org/wiki/%D0%A0%D0%B0%D1%81%D1%81%D1%82%D0%BE%D1%8F%D0%BD%D0%B8%D0%B5_%D0%9B%D0%B5%D0%B2%D0%B5%D0%BD%D1%88%D1%82%D0%B5%D0%B9%D0%BD%D0%B0
+
+Пространственная сложность алгоритма  O(|S1|*|S2|) 
+Временная сложность алгоритма O(|S1|*|S2|) 
+
+ */
+
 const _readline = require('readline');
 
 const _reader = _readline.createInterface({
@@ -40,17 +51,5 @@ function solve() {
         } 
     }
 
-    console.log(dp[s1.length -1][s2.length-1]);
-    //console.log(dp)
- 
+    console.log(dp[s1.length -1][s2.length-1]); 
 }
-
-let input = `pwhsvrojcj
-uepwplklojcj
-`;
-
-inputLines = input.split('\n');
-
-solve();
-
-
