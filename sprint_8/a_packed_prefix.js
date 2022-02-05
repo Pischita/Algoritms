@@ -50,13 +50,13 @@ function decode(str){
         }else if(currentSymbal === '['){
             let expression = decode(str.substring(i+1));
             while(multiplier > 0){
-                result += expression;
+                result += expression.text;
                 multiplier--;
             }
-            i += expression.length + 1;
-            while(str[i+1] === ']'){
-                i++;
-            }
+            i += expression.lastIndex + 1;
+            // while(str[i+1] === ']'){
+            //     i++;
+            // }
         }else if(currentSymbal === ']'){
             break;
         }else{
@@ -66,7 +66,7 @@ function decode(str){
         i++;
     }
 
-    return result;
+    return {text:result, lastIndex:i};
 }
 
 function decodeString(str) {
@@ -157,10 +157,10 @@ function solve() {
     let strings = [] 
     for (let i = 1; i <= countRows; i++) {
         let str = inputLines[i];
-        strings.push(decode(str) );
+        strings.push(decode(str).text );
     }
 
-    console.log(strings);
+    //console.log(strings);
 
     currentPrefix = strings[0];
     for(let i = 1; i < strings.length; i++){
@@ -174,8 +174,12 @@ function solve() {
 }
 
 
-let input = `1
-1[1[a]]1[b]1[1[c]]1[1[d]1[e]]1[f]
+let input = `5
+kedkedkedbjbjrcrcrcjvmjvmorchorchorchcjcjcjkedkedkedbjbjrcrcrcjvmjvmorchorchorchcjcjcjejkejkejkyqkwyqkwyqkwxvxvxvmhcomhcornfpmbbbkhjqqxqxmhcomhcornfpmbbbkhjqqxqxmhcomhcornfpmbbbkhjqqxqx3[liw]
+kedkedkedbjbjrcrcrcjvmjvmorchorchorchcjcjcjkedkedkedbjbjrcrcrcjvmjvmorchorchorchcjcjcjejkejkejkyqkwyqkwyqkwxvxvxvmhcomhcornfpmbbbkhjqqxqxmhcomhcornfpmbbbkhjqqxqxmhcomhcornfpmbbbkhjqqxqx1[fseg]
+2[3[ked]2[bj]3[rc]2[jvm]3[orch]3[cj]]3[ejk]1[3[yqkw]3[xv]]3[2[mhco]1[rn]1[fpm]3[b]1[khjq]2[qx]]2[zfxa]
+kedkedkedbjbjrcrcrcjvmjvmorchorchorchcjcjcjkedkedkedbjbjrcrcrcjvmjvmorchorchorchcjcjcjejkejkejkyqkwyqkwyqkwxvxvxvmhcomhcornfpmbbbkhjqqxqxmhcomhcornfpmbbbkhjqqxqxmhcomhcornfpmbbbkhjqqxqx2[t]
+kedkedkedbjbjrcrcrcjvmjvmorchorchorchcjcjcjkedkedkedbjbjrcrcrcjvmjvmorchorchorchcjcjcjejkejkejkyqkwyqkwyqkwxvxvxvmhcomhcornfpmbbbkhjqqxqxmhcomhcornfpmbbbkhjqqxqxmhcomhcornfpmbbbkhjqqxqx2[3[fdt]]1[3[vv]1[cg]3[grxm]]
 `;
 
 inputLines = input.split('\n');
