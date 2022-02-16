@@ -1,0 +1,181 @@
+const _readline = require('readline');
+
+const _reader = _readline.createInterface({
+    input: process.stdin
+});
+
+let inputLines = [];
+
+
+_reader.on('line', line => {
+    inputLines.push(line);
+});
+
+// Когда ввод закончится, будет вызвана функция solve.
+process.stdin.on('end', solve);
+
+class TrieNode{
+    constructor(key){
+        this.key = key;
+        this.values = [];
+        this.parent = null;
+        this.children = {};
+    }
+
+    getWord(){
+        let output = [];
+        let node = this;
+
+        while (node !== null){
+            output.unshift(node.key);
+            node = node.parent;
+        }
+
+        return output;
+    }
+}
+
+class Trie{
+    constructor(){
+        this.root = new TrieNode(null);
+    }
+
+    insert(pattern, fullWord){
+        let node = this.root;
+
+        for(let i = 0; i < pattern.length; i++){
+            if( !node.children[pattern[i] ]){
+                node.children[pattern[i]] = new TrieNode(pattern[i]);
+                node.children[pattern[i]].parent = node;
+            }
+
+            node = node.children[pattern[i]];
+
+            if( i === pattern.length - 1){
+                node.values.push(fullWord);
+            }
+        }
+    }
+
+    find(pattern){
+        let node = this.root;
+        let result = []
+        for(let i = 0; i < pattern.length; i++){
+            if( node.children[pattern[i] ]){
+                node = node.children[pattern[i] ];
+            }else{
+                return null;
+            }
+
+            if( i === pattern.length - 1){
+                result = node.values;
+                result = result.concat(this.getHints(node));
+                return result;
+            }
+        }
+        
+        // Случай когда пустая строка
+        result = result.concat(this.getHints(node));
+        return result;
+    }
+
+    getHints(node){
+        const nodes = [];
+
+        let result = [];
+
+        for(let child in node.children){
+            nodes.push(node.children[child]);
+        }
+
+        while(nodes.length > 0){
+            let currentNode = nodes.pop();
+            if(currentNode.values.length > 0){
+                result = result.concat(currentNode.values);
+            }
+
+            for(let child in currentNode.children){
+                nodes.push(currentNode.children[child]);
+            }
+
+        }
+
+        return result;
+    }
+
+
+}
+
+function getPattern(word){
+    let result = '';
+    for(let i = 0; i < word.length; i++){
+        let charCode = word.charCodeAt(i);
+        if(charCode >= 65 && charCode <= 90) {
+            result += word[i];
+        }
+    }
+
+    return result;
+}
+
+function solve() {
+    const countWords = Number(inputLines[0]);
+    
+    const trie = new Trie();
+
+    for(let i = 1; i <= countWords; i++){
+        let pattern = getPattern(inputLines[i]);
+        trie.insert(pattern, inputLines[i]);
+    }
+
+    
+    let countPatterns = inputLines[countWords+1];
+    const skipLines = countWords+2;
+
+    let result = [];
+    for(let i = 0; i < countPatterns; i++){
+        let pattern = inputLines[skipLines + i];
+        let words = trie.find(pattern);
+        if(words){
+            words.sort();
+            result = result.concat(words);
+        }else{
+            result.push(' ');
+        }
+        
+    }
+
+    result.forEach(item =>{
+        console.log(item);
+    });
+
+    //console.log(trie);
+}
+
+
+let input = `10
+sasBnqcrtd
+LxQqixlzny
+OvfLsfqiel
+Oipprvszpv
+zfngvmfyip
+LpnvuhYihv
+LQufMBJWDW
+LQqgMgBJWD
+OJLIYUojlu
+LdjQqMBJWD
+10
+OLIYUVTNK
+OLIIUVTN
+OLUYUVTN
+
+LQMBJWYW
+OLIYUVT
+LQMBJWDWY
+LQMBJWDWW
+LQMCJWDW
+LQMBJWDWI`;
+
+inputLines = input.split('\n');
+
+solve();

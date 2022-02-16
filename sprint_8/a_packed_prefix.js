@@ -72,14 +72,37 @@ function prefix(prefixVector, str){
 
     let index = 0;
     let size = 0;
+    let commonMaximun = 99999999;
+    let commonIndex = 0;
+    let isCheck = false;
+
     for(let i = 0; i < prefixVector.length; i++){
         if(prefixVector[i] > size){
             size = prefixVector[i];
             index = i;
         }
+
+        if(str[i] ==='#'){
+            // Первую строку пропускаем
+            if(isCheck && commonMaximun > size){
+                commonMaximun = size;
+                commonIndex = index;
+            }
+
+            size = 0;
+            index = 0;
+
+            isCheck = true;
+
+        }
+    }
+    
+    if(commonMaximun > size){
+        commonMaximun = size;
+        commonIndex = index;
     }
 
-    i = index - size + 1;
+    i = commonIndex - commonMaximun + 1;
     while(i <= index){
         result +=str[i];
         i++;
@@ -100,20 +123,26 @@ function solve() {
     //console.log(strings);
 
     currentPrefix = strings[0];
-    for(let i = 1; i < strings.length; i++){
-        let str = currentPrefix + '#' + strings[i]
-        let pfunc = prefixFunction(str, currentPrefix.length + 1);
-        currentPrefix = prefix(pfunc, str);
-    }
+    // for(let i = 1; i < strings.length; i++){
+    //     let str = currentPrefix + '#' + strings[i]
+    //     let pfunc = prefixFunction(str, currentPrefix.length + 1);
+    //     currentPrefix = prefix(pfunc, str);
+    // }
+    let str = strings.join('#');
+    let pfunc = prefixFunction(str, currentPrefix.length + 1);
+    currentPrefix = prefix(pfunc, str);
+
+
 
     console.log(currentPrefix);
 }
 
 
 let input = `3
-2[a]2[ab]
-3[a]2[r2[t]]
-a2[aa3[b]]`;
+abacabaca
+2[abac]a
+3[aba]
+`;
 
 inputLines = input.split('\n');
 
