@@ -11,6 +11,54 @@ _reader.on('line', line => {
     inputLines.push(line);
 });
 
+class Node {
+    constructor(value, next, prev) {
+        this.value = value;
+        this.next = next;
+        this.prev = prev;
+    }
+}
+
+class ListQueue {
+    constructor() {
+        this._head = null;
+        this._tail = null;
+        this._size = 0;
+    }
+
+    put(x) {
+        const node = new Node(x);
+        if (this._size === 0) {
+            this._head = node;
+            this._tail = node;
+        } else {
+            const prevTail = this._tail;
+            this._tail = node;
+            this._tail.prev = prevTail;
+            prevTail.next = this._tail;
+        }
+        this._size++;
+    }
+
+    get(){
+        if(this._size === 0){
+            return null;
+        }
+        const x = this._head;
+
+        this._head = x.next;
+        this._size--;
+
+        return x.value;        
+    }
+
+    size(){
+        return this._size;
+    }
+
+}
+
+
 // Когда ввод закончится, будет вызвана функция solve.
 process.stdin.on('end', solve);
 
@@ -69,13 +117,19 @@ class Trie{
 
             if( i === pattern.length - 1){
                 result = node.values;
-                result = result.concat(this.getHints(node));
+                let hints = this.getHints(node);
+                hints.forEach(item =>{
+                    result.push(item);
+                })
                 return result;
             }
         }
         
         // Случай когда пустая строка
-        result = result.concat(this.getHints(node));
+        let hints = this.getHints(node);
+        hints.forEach(item =>{
+            result.push(item);
+        });
         return result;
     }
 
@@ -91,7 +145,12 @@ class Trie{
         while(nodes.length > 0){
             let currentNode = nodes.pop();
             if(currentNode.values.length > 0){
-                result = result.concat(currentNode.values);
+                currentNode.values.forEach(item =>{
+                    result.push(item);
+                });
+                
+            }else{
+                result.push(' ');
             }
 
             for(let child in currentNode.children){
@@ -138,9 +197,11 @@ function solve() {
         let words = trie.find(pattern);
         if(words){
             words.sort();
-            result = result.concat(words);
+            words.forEach(item=>{
+                result.push(item);
+            });
         }else{
-            result.push(' ');
+            //result.push(' ');
         }
         
     }
@@ -153,28 +214,18 @@ function solve() {
 }
 
 
-let input = `10
-sasBnqcrtd
-LxQqixlzny
-OvfLsfqiel
-Oipprvszpv
-zfngvmfyip
-LpnvuhYihv
-LQufMBJWDW
-LQqgMgBJWD
-OJLIYUojlu
-LdjQqMBJWD
-10
-OLIYUVTNK
-OLIIUVTN
-OLUYUVTN
+let input = `5
+LydSajzvlOfvvkks
+Wtwevxyuzmvxwpfl
+XGnMsahinfltysyp
+ymfikarglyjabssu
+XlrylqwxewevAvvf
+3
 
-LQMBJWYW
-OLIYUVT
-LQMBJWDWY
-LQMBJWDWW
-LQMCJWDW
-LQMBJWDWI`;
+WOPH
+JK
+
+`;
 
 inputLines = input.split('\n');
 
