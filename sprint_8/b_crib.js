@@ -14,18 +14,18 @@ _reader.on('line', line => {
 // Когда ввод закончится, будет вызвана функция solve.
 process.stdin.on('end', solve);
 
-class TrieNode{
-    constructor(key){
+class TrieNode {
+    constructor(key) {
         this.key = key;
         this.parent = null;
         this.children = {};
         this.end = false;
     }
 
-    getWord(){
+    getWord() {
         let output = [];
         let node = this;
-        while(node !== null){
+        while (node !== null) {
             output.unshift(node.key);
             node = node.parent;
         }
@@ -34,63 +34,77 @@ class TrieNode{
     }
 }
 
-class Trie{
-    constructor(){
+class Trie {
+    constructor() {
         this.root = new TrieNode(null);
     }
 
-    insert(word){
+    insert(word) {
         let node = this.root;
 
-        for(let i = 0; i < word.length; i++){
+        for (let i = 0; i < word.length; i++) {
             let letter = word[i];
-            if(! node.children[letter]){
+            if (!node.children[letter]) {
                 node.children[letter] = new TrieNode(letter);
                 node.children[letter].parent = node;
             }
 
             node = node.children[letter];
 
-            if(i === word.length -1){
+            if (i === word.length - 1) {
                 node.end = true;
             }
         }
     }
 
 
-    check(str){
+    check(str) {
         let result = 'YES';
 
         let node = this.root;
-        
 
-        for(let i = 0; i < str.length; i++){
+        const dp = new Array(str.length).fill(0);
+
+        let searchNext = false;
+
+        for (let i = 0; i < str.length; i++) {
             let letter = str[i];
 
-            if(node.children[letter]){
+            if (node.children[letter]) {
 
-                if(node.children[letter].end){
+                if (node.children[letter].end) {
                     // Может быть есть более длинное слово
+                    dp[i] = 1;
+                    searchNext = true;
+                }
+                node = node.children[letter];
+                if (i === str.length - 1 && !node.end) {
+                    // Конец строки но слово найдено только частично
+                    result = 'NO';
+                }
 
-                    // Ищем следующее слово
-                    node = this.root;
+            } else {
+                if (searchNext) {
+                    searchNext = false;
+                    let index = i;
+                    while (index > 0) {
+                        if (dp[index] === 0) {
+                            index--;
+                        } else {
+                            i = index;
+                            node = this.root;
+                            break;
+                        }
 
-
-                }else{
-                    node = node.children[letter];
-
-                    if(i === str.length -1 && !node.end){
-                        // Конец строки но слово найдено только частично
-                        result = 'NO';
                     }
 
-                }                
-            }else{
-                result = 'NO';
-                break;
+                } else {
+                    result = 'NO';
+                    break;
+                }
             }
-    
-           
+
+
         }
 
         return result;
@@ -104,22 +118,22 @@ function solve() {
 
     let str = inputLines[0].split('');
     const countWords = Number(inputLines[1]);
-    
+
     let words = [];
     const skipLines = 2;
 
     const trie = new Trie();
 
-    for(let i = 0; i < countWords; i++){
+    for (let i = 0; i < countWords; i++) {
         trie.insert(inputLines[i + skipLines]);
     }
-   
-    
 
-    console.log(trie.check(str) );
-   
 
-    
+
+    console.log(trie.check(str));
+
+
+
 }
 
 
