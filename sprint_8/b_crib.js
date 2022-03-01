@@ -84,24 +84,29 @@ class Trie {
                 }
 
             } else {
-                if (searchNext) {
-                    searchNext = false;
-                    let index = i;
-                    while (index > 0) {
-                        if (dp[index] === 0) {
-                            index--;
-                        } else {
-                            i = index;
-                            node = this.root;
-                            break;
-                        }
-
+                //if (searchNext) {
+                searchNext = false;
+                let index = i;
+                let isContinue = false;
+                while (index >= 0) {
+                    if (dp[index] !== 1) {
+                        index--;
+                    } else if (dp[index] === 1) {
+                        i = index;
+                        dp[index]++;
+                        node = this.root;
+                        isContinue = true;
+                        break;
                     }
+                }
 
-                } else {
+                //} else {
+                if (!isContinue) {
                     result = 'NO';
                     break;
                 }
+
+                //}
             }
 
 
