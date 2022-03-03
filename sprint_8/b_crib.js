@@ -150,16 +150,3 @@ function solve() {
 
 
 }
-
-
-let input = `sscevscescescscsscevscevscesscsc
-4
-sce
-s
-scev
-sc
-`;
-
-inputLines = input.split('\n');
-
-solve();
