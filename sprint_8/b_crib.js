@@ -143,10 +143,6 @@ function solve() {
         trie.insert(inputLines[i + skipLines]);
     }
 
-
-
     console.log(trie.check(str));
-
-
 
 }

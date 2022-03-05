@@ -112,6 +112,20 @@ function prefix(prefixVector, str){
 
 }
 
+function commonPrefix(str1, str2){
+    let result = '';
+    for(let i = 0; i < str1.length && str2.length; i++){
+        if(str1[i] === str2[i]){
+            result +=str1[i]
+        }else{
+            break;
+        }
+    }
+
+    return result;
+    
+}
+
 function solve() {
     const countRows = Number(inputLines[0]);
     let strings = [] 
@@ -123,15 +137,12 @@ function solve() {
     //console.log(strings);
 
     currentPrefix = strings[0];
-    // for(let i = 1; i < strings.length; i++){
-    //     let str = currentPrefix + '#' + strings[i]
-    //     let pfunc = prefixFunction(str, currentPrefix.length + 1);
-    //     currentPrefix = prefix(pfunc, str);
-    // }
-    let str = strings.join('#');
-    let pfunc = prefixFunction(str, currentPrefix.length + 1);
-    currentPrefix = prefix(pfunc, str);
-
+     for(let i = 1; i < strings.length; i++){
+      
+        currentPrefix = commonPrefix(currentPrefix, strings[i] ); 
+        
+    }
+    
 
 
     console.log(currentPrefix);
@@ -139,9 +150,9 @@ function solve() {
 
 
 let input = `3
-abacabaca
-2[abac]a
-3[aba]
+2[a]2[ab]
+3[a]2[r2[t]]
+a2[aa3[b]]
 `;
 
 inputLines = input.split('\n');
